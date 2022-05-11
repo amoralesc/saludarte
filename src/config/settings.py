@@ -29,6 +29,7 @@ ALLOWED_HOSTS = list(map(str.strip, allowed_hosts.split(",")))
 # Application definitions
 INSTALLED_APPS = [
     "pages.apps.PagesConfig",
+    "accounts.apps.AccountsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -67,6 +68,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
+
+# Custom user model
+AUTH_USER_MODEL = "accounts.User"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
