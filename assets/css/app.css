@@ -1,7 +1,62 @@
-/*
- * Your custom CSS goes here but before adding a lot of CSS check this out:
- *   https://tailwindcss.com/docs/extracting-components
-*/
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/*
+ * Fonts:
+ * - Roboto
+ * - Raleway
+*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.font-roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.font-raleway {
+  font-family: "Raleway", sans-serif;
+}
+
+/* Input text elements */
+
+.form-control:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.icon-email {
+  background-image: url(../images/ic-email.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: auto;
+}
+
+.icon-lock {
+  background-image: url(../images/ic-lock.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: auto;
+}
+
+.input-text {
+  padding-left: 12px;
+  float: left;
+  outline: none;
+  border: none;
+  background-color: white;
+}
+
+.custom-input {
+  display: flex;
+  background-color: white !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
