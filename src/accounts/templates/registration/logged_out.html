@@ -1,0 +1,12 @@
+{% extends "layouts/base_not_authenticated.html" %}
+
+{% block title %}Cerraste sesión{% endblock %}
+
+{% block body %}
+
+  <div class="flex flex-col items-center gap-4 ">
+    <h1 class="text-3xl font-raleway font-semibold text-slate-800">Has cerrado sesión</h1>
+    <a href="{% url 'login'%}" class=""><u>Presiona aquí para volver a ingresar</u></a>
+  </div>
+
+{% endblock %}

@@ -1,5 +1,7 @@
 {% load static %}
 
+<!-- TODO: Fix nav bar -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,7 +29,7 @@
       <div class="max-w-screen-lg mx-auto py-3 px-3 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between flex-wrap">
           <!-- Logo -->
-          <a href="https://www.google.com">
+          <a href="{% url 'login'%}">
             <div class="flex-1 flex items-center space-x-2">
               <img class="cursor-pointer h-8 w-8" src="{% static 'images/logo.svg' %}" alt="">
               <img src="{% static 'images/logo-text.svg' %}" alt="">

@@ -20,6 +20,10 @@
 
 /* Input text elements */
 
+.form-control {
+  width: 100%;
+}
+
 .form-control:focus {
   -webkit-box-shadow: none;
   box-shadow: none;

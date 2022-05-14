@@ -72,7 +72,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Custom user model
 AUTH_USER_MODEL = "accounts.User"
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -123,6 +123,11 @@ CACHES = {
         "LOCATION": REDIS_URL,
     }
 }
+
+# TODO: Remove in production
+# Email
+# https://docs.djangoproject.com/en/4.0/topics/email/
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Celery
 # https://docs.celeryproject.org/en/stable/userguide/configuration.html

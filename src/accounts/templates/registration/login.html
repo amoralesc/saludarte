@@ -5,7 +5,7 @@
 
 {% block body %}
   
-  <div class="px-10 py-6 flex flex-col gap-4 border-2 rounded-md border-slate-800">
+  <div class="px-10 py-6 flex flex-col max-w-md gap-4 border-2 rounded-md border-slate-800">
     <h1 class="text-4xl text-center font-raleway font-medium text-slate-800">Iniciar sesión</h1>
 
     <form class="flex flex-col gap-4" method="post" action="{% url 'login' %}">
@@ -32,21 +32,22 @@
   </div>
 
   {% if form.errors %}
-    <div class="p-2 mt-4 text-center font-light font-roboto rounded-md bg-red-400">
+    <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
     El correo o contraseña son inválidos
     </div>
   {% endif %}
 
   {% if next %}
     {% if user.is_authenticated %}
-      <div class="p-2 mt-4 text-center font-light font-roboto rounded-md bg-red-400">
+      <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
       No tienes permisos para acceder a esta página
       </div>
     {% else %}
-      <div class="p-2 mt-4 text-center font-light font-roboto rounded-md bg-red-400">
+      <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
       Inicia sesión para acceder a esta página
       </div>
     {% endif %}
   {% endif %}
 
 {% endblock %}
+
