@@ -8,10 +8,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    context = {
-        "debug": settings.DEBUG,
-        "django_ver": get_version(),
-        "python_ver": os.environ["PYTHON_VERSION"],
-    }
+    """
+    Default home page located at /
+    """
 
-    return render(request, "pages/home.html", context)
+    return render(request, "pages/home.html")
