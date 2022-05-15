@@ -1,10 +1,9 @@
 {% extends "layouts/base_authenticated.html" %}
-{% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block body %}
   <div class="flex flex-col justify-center items-center">
-    TODO: Add some info here
+    Hello {{ user.get_full_name }}
   </div>
 {% endblock %}

@@ -22,8 +22,9 @@ urlpatterns = [
     path("up/", include("up.urls")),
     path("", include("pages.urls")),
     path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
-    # The above path() function is equivalent to:
+    # django.contrib.auth.urls includes:
     # accounts / login / [name = 'login']
     # accounts / logout / [name= 'logout']
     # accounts / password_change / [name= 'password_change']

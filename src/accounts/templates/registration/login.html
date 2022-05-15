@@ -5,7 +5,7 @@
 
 {% block body %}
   
-  <div class="px-10 py-6 flex flex-col max-w-md gap-4 border-2 rounded-md border-slate-800">
+  <div class="flex px-10 py-6 flex-col max-w-md gap-4 border-2 rounded-md border-slate-800">
     <h1 class="text-4xl text-center font-raleway font-medium text-slate-800">Iniciar sesión</h1>
 
     <form class="flex flex-col gap-4" method="post" action="{% url 'login' %}">
@@ -21,7 +21,7 @@
           <input type="password" name="password" placeholder="Contraseña" class="form-control input-text" >
         </div>
 
-        <input class="p-2 text-lg cursor-pointer rounded-md font-raleway font-normal bg-slate-800 text-white self-stretch" type="submit" value="INICIAR SESIÓN" />
+        <input class="btn btn-primary self-stretch" type="submit" value="INICIAR SESIÓN" />
         <input type="hidden" name="next" value="{{ next }}" />
     
     </form>
@@ -50,4 +50,3 @@
   {% endif %}
 
 {% endblock %}
-

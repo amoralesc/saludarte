@@ -2,75 +2,52 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{% block title %}{% endblock %} | Saludarte</title>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="A production ready example Django app that's using Docker and Docker Compose."
-    />
+<head>
+  <title>{% block title %}{% endblock %} | Saludarte</title>
 
-    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
-    <script defer src="{% static 'js/app.js' %}"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A production ready example Django app that's using Docker and Docker Compose." />
 
-    {# Generated with: https://realfavicongenerator.net/ #}
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="{% static 'apple-touch-icon.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="{% static 'favicon-32x32.png' %}"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="{% static 'favicon-16x16.png' %}"
-    />
-    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
-    <link
-      rel="mask-icon"
-      href="{% static 'safari-pinned-tab.svg' %}"
-      color="#5bbad5"
-    />
-    <meta name="msapplication-TileColor" content="#9f00a7" />
-    <meta name="theme-color" content="#ffffff" />
-  </head>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+  <script defer src="{% static 'js/app.js' %}"></script>
 
-  <body class="flex flex-col h-screen justify-between">
-    <!-- Navigation header -->
-    <nav class="bg-slate-800 px-3 py-3 sm:px-6 lg:px-8">
+  {# Generated with: https://realfavicongenerator.net/ #}
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}" />
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}" />
+  <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+  <link rel="mask-icon" href="{% static 'safari-pinned-tab.svg' %}" color="#5bbad5" />
+  <meta name="msapplication-TileColor" content="#9f00a7" />
+  <meta name="theme-color" content="#ffffff" />
+</head>
+
+<body class="flex flex-col h-screen justify-start">
+  <!-- Navigation header, fixed at the top of the screen -->
+  <header class="z-50">
+    <nav class="bg-slate-800 px-3 py-3 sm:px-6 lg:px-8 ">
       <div class="flex items-center justify-between flex-wrap">
         <!-- Elements to the left (logo and nav items) -->
         <div class="flex items-center gap-6 flex-wrap">
           <!-- Logo -->
           <a href="{% url 'home'%}">
             <div class="flex-1 flex items-center space-x-2">
-              <img
-                class="cursor-pointer h-8 w-8"
-                src="{% static 'images/logo.svg' %}"
-                alt=""
-              />
+              <img class="cursor-pointer h-8 w-8" src="{% static 'images/logo.svg' %}" alt="" />
               <img src="{% static 'images/logo-text.svg' %}" alt="" />
             </div>
           </a>
 
           <!-- Navigation items -->
           <!-- 
-              Some navigation items are only shown to staff-level users:
-              - USUARIOS
-              
-              The if condition inside each li tells the element to be marked as active
-              if the current url matches it's url destination
+                Some navigation items are only shown to staff-level users:
+                - USUARIOS
+                
+                The if condition inside each li tells the element to be marked as active
+                if the current url matches it's url destination
 
-              TODO: Fix url paths
-          -->
+                TODO: Fix url paths
+            -->
           <ul class="nav-items gap-4">
             {% if request.user.is_staff %}
             <li class="nav-item {% if url_name == 'TODO:' %}active{% endif %}">
@@ -98,43 +75,26 @@
         </div>
 
         <!-- Elements to the right (account & notifications) 
-            TODO: Fix url paths
-        -->
+              TODO: Fix url paths
+          -->
         <div class="flex items-center gap-6 flex-wrap">
 
           <!-- Account dropdown -->
           <div class="relative">
-            <button
-              class="dropdown-button flex items-center gap-2 focus:outline-none"
-              aria-label="Account menu"
-            >
-              <img
-                class="rounded-full h-10 w-10"
-                src="{% static 'images/ic-account-circle-white.svg' %}"
-                alt=""
-              />
+            <button class="dropdown-button flex items-center gap-2 focus:outline-none" aria-label="Account menu">
+              <img class="rounded-full h-10 w-10" src="{% static 'images/ic-account-circle-white.svg' %}" alt="" />
               <span class="md:inline-block text-white text-lg font-raleway">
                 {{ user.get_short_name }}
             </button>
 
             <div class="dropdown absolute sm:right-0 lg:right-0 w-40 rounded-md shadow-lg z-30">
               <div class="py-1 rounded-md bg-white shadow-xs">
-                <a
-                  href="{% url 'home'%}"
-                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                >
+                <a href="{% url 'accounts:profile' %}"
+                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
                   Ver perfil
                 </a>
-                <a
-                  href="{% url 'home'%}"
-                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                >
-                  Configuración
-                </a>
-                <a
-                  href="{% url 'logout'%}"
-                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                >
+                <a href="{% url 'logout'%}"
+                  class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
                   Cerrar sesión
                 </a>
               </div>
@@ -143,10 +103,12 @@
         </div>
       </div>
     </nav>
+  </header>
 
-    <!-- Main content -->
-    <main class="max-w-screen-lg mx-auto my-auto">
-      {% block body %}{% endblock %}
-    </main>
-  </body>
+  <!-- Main content -->
+  <main class="flex-1 overflow-y-auto pt-6 mx-auto">
+    {% block body %}{% endblock %}
+  </main>
+</body>
+
 </html>

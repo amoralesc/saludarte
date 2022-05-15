@@ -39,7 +39,11 @@ MALE = 1
 FEMALE = 2
 UNDEFINED = 3
 
-GENDER_CHOICES = ((MALE, "Male"), (FEMALE, "Female"), (UNDEFINED, "Undefined"))
+GENDER_CHOICES = (
+    (MALE, "Masculino"),
+    (FEMALE, "Feminino"),
+    (UNDEFINED, "No definido"),
+)
 
 
 class UserManager(BaseUserManager):
@@ -168,11 +172,27 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         """
-        Return the first_name plus the last_name, with a space in between.
+        Returns the first_name plus the last_name, with a space in between.
         """
         full_name = "%s %s" % (self.first_name, self.last_name)
         return full_name.strip()
 
     def get_short_name(self):
-        """Return the first name for the user."""
+        """
+        Returns the first name of the user.
+        """
         return self.first_name
+
+    def get_formatted_identification(self):
+        """
+        Returns the identification type and number of the user.
+        """
+        if self.identification_type is not None:
+            return "{} {}".format(
+                self.get_identification_type_display(),
+                self.identification_number,
+            )
+        elif self.identification_number is not None:
+            return self.identification_number
+        else:
+            return ""
