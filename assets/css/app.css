@@ -18,6 +18,43 @@
   font-family: "Raleway", sans-serif;
 }
 
+/* Navigation style */
+
+.nav-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  color: white;
+}
+
+.nav-item:hover {
+  color: rgb(34 197 94);
+}
+
+.nav-item.active {
+  color: rgb(34 197 94);
+  font-weight: 600;
+}
+
+/* dropdown custom element */
+
+.dropdown {
+  display: none;
+}
+
+.dropdown-button:hover ~ .dropdown {
+  display: block;
+}
+
+.dropdown:hover {
+  display: block;
+}
+
 /* Input text elements */
 
 .form-control {
