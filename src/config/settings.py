@@ -128,7 +128,8 @@ CACHES = {
 # TODO: Remove in production
 # Email
 # https://docs.djangoproject.com/en/4.0/topics/email/
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Celery
 # https://docs.celeryproject.org/en/stable/userguide/configuration.html
@@ -137,7 +138,7 @@ CELERY_RESULT_BACKEND = REDIS_URL
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "es-co"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
