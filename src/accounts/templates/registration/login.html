@@ -4,49 +4,54 @@
 {% block title %}Iniciar sesión{% endblock %}
 
 {% block body %}
-  
-  <div class="flex px-10 py-6 flex-col max-w-md gap-4 border-2 rounded-md border-slate-800">
+
+<div class="max-w-md flex flex-col gap-3 mx-auto">
+  <div class="container flex flex-col px-8 py-6 gap-4 border-2 rounded-md border-slate-800">
     <h1 class="text-4xl text-center font-raleway font-medium text-slate-800">Iniciar sesión</h1>
 
     <form class="flex flex-col gap-4" method="post" action="{% url 'login' %}">
       {% csrf_token %}
 
-        <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
-          <div class="icon-email"></div>
-          <input type="email" name="username" placeholder="Correo electrónico" class="form-control input-text" >
-        </div>
+      <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
+        <div class="icon-email"></div>
+        <input type="email" name="username" placeholder="Correo electrónico" class="form-control input-text">
+      </div>
 
-        <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
-          <div class="icon-lock"></div>
-          <input type="password" name="password" placeholder="Contraseña" class="form-control input-text" >
-        </div>
+      <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
+        <div class="icon-lock"></div>
+        <input type="password" name="password" placeholder="Contraseña" class="form-control input-text">
+      </div>
 
-        <input class="btn btn-primary self-stretch" type="submit" value="INICIAR SESIÓN" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    
+      <input class="btn btn-primary self-stretch" type="submit" value="INICIAR SESIÓN" />
+      <input type="hidden" name="next" value="{{ next }}" />
+
     </form>
 
-    <p class="text-center text-slate-800 text-sm"><a href="{% url 'password_reset' %}">
-      <u>¿Olvidaste tu contraseña?</u>
-    </a></p>
+    <p class="text-center text-sm text-slate-800"><a href="{% url 'password_reset' %}">
+        <u>¿Olvidaste tu contraseña?</u>
+      </a></p>
   </div>
 
+  <!-- If email and password aren't valid -->
   {% if form.errors %}
-    <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
+  <div class="error-message">
     El correo o contraseña son inválidos
-    </div>
+  </div>
   {% endif %}
 
+  <!-- If login required or permission required is triggered -->
   {% if next %}
-    {% if user.is_authenticated %}
-      <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
-      No tienes permisos para acceder a esta página
-      </div>
-    {% else %}
-      <div class="p-2 mt-4 max-w-md text-center font-light font-roboto rounded-md bg-red-400">
-      Inicia sesión para acceder a esta página
-      </div>
-    {% endif %}
+  {% if user.is_authenticated %}
+  <div class="error-message">
+    No tienes permisos para acceder a esta página
+  </div>
+  {% else %}
+  <div class="error-message">
+    Inicia sesión para acceder a esta página
+  </div>
   {% endif %}
+  {% endif %}
+
+</div>
 
 {% endblock %}

@@ -18,31 +18,20 @@
   font-family: "Raleway", sans-serif;
 }
 
-/* Navigation style */
+/* Navigation bar items */
 
-.nav-items {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  align-items: center;
-}
+@layer components {
+  .nav-item {
+    @apply text-white hover:text-green-600;
+  }
 
-.nav-item {
-  color: white;
-}
-
-.nav-item:hover {
-  color: rgb(34 197 94);
-}
-
-.nav-item.active {
-  color: rgb(34 197 94);
-  font-weight: 600;
+  .nav-item.active {
+    @apply font-semibold text-green-600;
+  }
 }
 
 /* 
-  dropdown custom element:
+  Dropdown custom element:
   The style allows to display the dropdown menu if it's being hovered
 */
 
@@ -60,10 +49,13 @@
 
 /* Buttons */
 
-/* Primary button */
 @layer components {
+  .btn {
+    @apply py-2 px-3 cursor-pointer rounded-md text-center;
+  }
+
   .btn.btn-primary {
-    @apply py-2 px-3 cursor-pointer rounded-md text-center text-base font-raleway font-normal bg-slate-800 hover:bg-green-600 text-white
+    @apply text-base font-raleway font-normal bg-slate-800 hover:bg-green-600 text-white;
   }
 }
 
@@ -112,4 +104,11 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+/* Error message */
+@layer components {
+  .error-message {
+    @apply p-2 rounded-md text-center font-light font-roboto bg-red-400;
+  }
 }

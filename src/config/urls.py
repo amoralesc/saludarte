@@ -22,7 +22,7 @@ urlpatterns = [
     path("up/", include("up.urls")),
     path("", include("pages.urls")),
     path("admin/", admin.site.urls),
-    path("accounts/", include("accounts.urls")),
+    path("cuenta/", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     # django.contrib.auth.urls includes:
     # accounts / login / [name = 'login']

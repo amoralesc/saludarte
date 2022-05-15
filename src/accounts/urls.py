@@ -5,6 +5,6 @@ from . import views
 
 app_name = "accounts"
 urlpatterns = [
-    # /accounts/profile
-    path("profile/", views.ProfilePageView.as_view(), name="profile"),
+    # name: accounts:profile, path: /cuenta/perfil
+    path("perfil/", views.ProfilePageView.as_view(), name="profile"),
 ]
