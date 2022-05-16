@@ -1,5 +1,7 @@
 {% extends "layouts/base_authenticated.html" %}
 {% load static %}
+{# TODO: Timezones are kinda broken and need to be manually set #}
+{% load tz %}
 
 {% block title %}Usuarios{% endblock %}
 
@@ -13,27 +15,37 @@
   </div>
 
   <!-- Users table, rendered using datatables (js) -->
-  <table id="datatable" class="display">
+  <table id="datatable" class="display compact">
     <!-- Table header -->
     <thead>
-      <tr>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Rol</th>
-        <th>Sede</th>
-        <th>Último acceso</th>
+      <tr class="font-raleway text-slate-800">
+        <th>NOMBRES</th>
+        <th>APELLIDOS</th>
+        <th>ROL</th>
+        <th>SEDE</th>
+        <th>ÚLTIMO ACCESO</th>
+        <th>ACCIONES</th>
       </tr>
     </thead>
 
     <!-- Table body -->
-    <tbody>
+    <tbody class="font-roboto">
       {% for user in users %}
       <tr>
         <td>{{ user.first_name }}</td>
         <td>{{ user.last_name }}</td>
         <td>{% if user.is_staff %}Administrador{% else %}Encargado{% endif %}</td>
         <td>{{ user.site.name }}</td>
-        <td>{{ user.last_login }}</td>
+        <td>
+          {% timezone "America/Bogota" %}
+          {{ user.last_login|date:"d/m/Y H:i" }}
+          {% endtimezone %}
+        </td>
+        <td class="flex flex-wrap gap-2">
+          <a href="" class="btn btn-primary py-1">VER</a>
+          <a href="" class="btn btn-primary py-1">EDITAR</a>
+          <a href="" class="btn btn-primary py-1">ELIMINAR</a>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
