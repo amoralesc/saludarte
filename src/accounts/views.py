@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, UpdateView
@@ -14,7 +13,7 @@ class ProfilePageView(LoginRequiredMixin, DetailView):
     model = get_user_model()
     template_name = "accounts/profile.html"
 
-    # The context_object is the current authenticated user
+    # The context_object is the currently authenticated user
     def get_object(self, queryset=None):
         return self.request.user
 
@@ -38,7 +37,6 @@ class EditProfilePageView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse("accounts:profile")
 
-    # The context_object is the current authenticated user
+    # The context_object is the currently authenticated user
     def get_object(self, queryset=None):
-        user = self.request.user
         return self.request.user

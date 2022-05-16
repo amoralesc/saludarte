@@ -5,5 +5,5 @@ var $  = require( 'jquery' );
 var dt = require( 'datatables.net' )( window, $ );
 
 $(document).ready(function () {
-  $("#example").DataTable();
+  $("#datatable").DataTable();
 });

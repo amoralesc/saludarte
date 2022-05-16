@@ -26,7 +26,7 @@
   }
 
   .nav-item.active {
-    @apply font-semibold text-green-600;
+    @apply text-green-600;
   }
 }
 

@@ -53,28 +53,31 @@
                 TODO: Fix url paths
             -->
           <ul class="flex items-center gap-4 m-0 p-0 list-none">
+            {# Get the current view name so it can be marked as active #}
+            {% with view_name=request.resolver_match.view_name %} 
             {% if request.user.is_staff %}
-            <li class="nav-item {% if url_name == 'TODO:' %}active{% endif %}">
-              <a href="{% url 'home'%}" class="text-lg font-raleway">
+            <li class="nav-item {% if view_name == 'users:index' %}active{% endif %}">
+              <a href="{% url 'users:index'%}" class="text-lg font-raleway">
                 USUARIOS
               </a>
             </li>
             {% endif %}
-            <li class="nav-item {% if url_name == 'TODO:' %}active{% endif %}">
+            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 RESIDENTES
               </a>
             </li>
-            <li class="nav-item {% if url_name == 'TODO:' %}active{% endif %}">
+            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 INVENTARIO
               </a>
             </li>
-            <li class="nav-item {% if url_name == 'TODO:' %}active{% endif %}">
+            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 MEDICAMENTOS
               </a>
             </li>
+            {% endwith %}
           </ul>
         </div>
 

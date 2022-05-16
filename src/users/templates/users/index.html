@@ -1,0 +1,9 @@
+{% extends "layouts/base_authenticated.html" %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+{% for user in users %}
+{{ user }}
+{% endfor %}
+{% endblock %}
