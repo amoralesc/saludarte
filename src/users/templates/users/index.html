@@ -9,14 +9,14 @@
 
 <div class="container flex flex-col gap-4 mx-auto">
 
-  <!-- Action buttons -->
+  {# Action buttons #}
   <div class="flex gap-3">
     <a href="{% url 'users:new' %}" class="btn btn-primary">NUEVO USUARIO</a>
   </div>
 
-  <!-- Users table, rendered using datatables (js) -->
+  {# Users table, rendered using datatables (js) #}
   <table id="datatable" class="display compact">
-    <!-- Table header -->
+    {# Table header #}
     <thead>
       <tr class="font-raleway text-slate-800">
         <th>NOMBRES</th>
@@ -28,7 +28,7 @@
       </tr>
     </thead>
 
-    <!-- Table body -->
+    {# Table body #}
     <tbody class="font-roboto">
       {% for user in users %}
       <tr>

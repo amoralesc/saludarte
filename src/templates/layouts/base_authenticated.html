@@ -11,7 +11,7 @@
   <meta name="description" content="A production ready example Django app that's using Docker and Docker Compose." />
 
   <link rel="stylesheet" href="{% static 'css/app.css' %}" />
-  <!-- DataTables CSS -->
+  {# DataTables CSS #}
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" />
 
   <script defer src="{% static 'js/app.js' %}"></script>
@@ -28,13 +28,13 @@
 
 <body class="flex flex-col h-screen justify-start">
 
-  <!-- Navigation header, fixed at the top of the screen -->
+  {# Navigation header, fixed at the top of the screen #}
   <header class="z-50">
     <nav class="bg-slate-800 px-3 py-3 sm:px-6 lg:px-8 ">
       <div class="flex items-center justify-between flex-wrap">
-        <!-- Elements to the left (logo and nav items) -->
+        {# Elements to the left (logo and nav items) #}
         <div class="flex items-center gap-6 flex-wrap">
-          <!-- Logo -->
+          {# Logo #}
           <a href="{% url 'home'%}">
             <div class="flex-1 flex items-center space-x-2">
               <img class="cursor-pointer h-8 w-8" src="{% static 'images/logo.svg' %}" alt="" />
@@ -42,37 +42,41 @@
             </div>
           </a>
 
-          <!-- Navigation items -->
-          <!-- 
+          {# Navigation items #}
+          {# 
                 Some navigation items are only shown to staff-level users:
                 - USUARIOS
                 
                 The if condition inside each li tells the element to be marked as active
-                if the current url matches it's url destination
+                if the current url view matches the app_name of the nav item.
 
                 TODO: Fix url paths
-            -->
+            #}
           <ul class="flex items-center gap-4 m-0 p-0 list-none">
+
             {# Get the current view name so it can be marked as active #}
-            {% with view_name=request.resolver_match.view_name %} 
+            {% with app_names=request.resolver_match.app_names %}
+
+            {# Only staff users can access these views #}
             {% if request.user.is_staff %}
-            <li class="nav-item {% if view_name == 'users:index' %}active{% endif %}">
+            <li class="nav-item {% if 'users' in app_names %}active{% endif %}">
               <a href="{% url 'users:index'%}" class="text-lg font-raleway">
                 USUARIOS
               </a>
             </li>
             {% endif %}
-            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
+
+            <li class="nav-item {% if 'TODO:' in app_names %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 RESIDENTES
               </a>
             </li>
-            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
+            <li class="nav-item {% if 'TODO:' in app_names %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 INVENTARIO
               </a>
             </li>
-            <li class="nav-item {% if view_name == 'TODO:' %}active{% endif %}">
+            <li class="nav-item {% if 'TODO:' in app_names %}active{% endif %}">
               <a href="{% url 'home'%}" class="text-lg font-raleway">
                 MEDICAMENTOS
               </a>
@@ -81,10 +85,10 @@
           </ul>
         </div>
 
-        <!-- Elements to the right (account & notifications) -->
+        {# Elements to the right (account & notifications) #}
         <div class="flex items-center gap-6 flex-wrap">
 
-          <!-- Account dropdown -->
+          {# Account dropdown #}
           <div class="relative">
             <button class="dropdown-button flex items-center gap-2 focus:outline-none" aria-label="Account menu">
               <img class="rounded-full h-8 w-8" src="{% static 'images/ic-account-circle-white.svg' %}" alt="" />
@@ -110,7 +114,7 @@
     </nav>
   </header>
 
-  <!-- Main content -->
+  {# Main content #}
   <main class="flex-1 flex flex-col pt-6 px-4 overflow-y-auto">
     {% block body %}{% endblock %}
   </main>

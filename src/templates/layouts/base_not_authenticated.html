@@ -1,6 +1,6 @@
 {% load static %}
 
-<!-- TODO: Fix nav bar -->
+{# TODO: Fix nav bar #}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,12 +27,12 @@
 
 <body class="flex flex-col h-screen">
 
-  <!-- Navigation header, fixed at the top of the screen -->
+  {# Navigation header, fixed at the top of the screen #}
   <header class="z-50">
     <div class="bg-slate-800">
       <div class="max-w-screen-lg py-3 px-3 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between flex-wrap">
-          <!-- Logo -->
+          {# Logo #}
           <a href="{% url 'login'%}">
             <div class="flex-1 flex items-center space-x-2">
               <img class="cursor-pointer h-8 w-8" src="{% static 'images/logo.svg' %}" alt="" />

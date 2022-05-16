@@ -32,14 +32,14 @@
       </a></p>
   </div>
 
-  <!-- If email and password aren't valid -->
+  {# If email and password aren't valid #}
   {% if form.errors %}
   <div class="error-message w-full">
     El correo o contraseña son inválidos
   </div>
   {% endif %}
 
-  <!-- If login required or permission required is triggered -->
+  {# If login required or permission required is triggered #}
   {% if next %}
   {% if user.is_authenticated %}
   <div class="error-message w-full">

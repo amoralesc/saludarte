@@ -10,51 +10,51 @@
 <div class="flex flex-col gap-4 mx-auto">
   <div class="container flex flex-wrap justify-between gap-8 px-10 py-6 border-2 rounded-md border-slate-800">
 
-    <!-- Left side: profile picture and action buttons -->
+    {# Left side: profile picture and action buttons #}
     <div class="flex-1 flex flex-col items-center gap-3">
 
-      <!-- Profile picture -->
+      {# Profile picture #}
       <div class="flex flex-col items-center gap-2">
         <div class="text-center leading-4 text-lg font-raleway text-slate-800">FOTO DE PERFIL</div>
         <img class="rounded-full h-40 w-40" src="{% static 'images/ic-account-circle-dark.svg' %}"
           alt="Profile picture" />
       </div>
 
-      <!-- Profile action buttons -->
+      {# Profile action buttons #}
       <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary self-stretch">EDITAR PERFIL</a>
       <a href="{% url 'accounts:password_change' %}" class="btn btn-primary self-stretch">CAMBIAR CONTRASEÑA</a>
       <a href="{% url 'logout' %}" class="btn btn-primary self-stretch">CERRAR SESIÓN</a>
 
     </div>
 
-    <!-- Right side: profile information -->
+    {# Right side: profile information #}
     <div class="flex flex-col items-start gap-3">
 
-      <!-- Name -->
+      {# Name #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">NOMBRE</div>
         <div class="text-xl font-light font-roboto">{{ object.get_full_name }}</div>
       </div>
 
-      <!-- Email -->
+      {# Email #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">CORREO ELECTRÓNICO</div>
         <div class="text-xl font-light font-roboto">{{ object.email }}</div>
       </div>
 
-      <!-- Identification number -->
+      {# Identification number #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">DOCUMENTO</div>
         <div class="text-xl font-light font-roboto">{{ object.get_formatted_identification }}</div>
       </div>
 
-      <!-- Gender -->
+      {# Gender #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">GÉNERO</div>
         <div class="text-xl font-light font-roboto">{{ object.get_gender_display }}</div>
       </div>
 
-      <!-- Role (Staff level) -->
+      {# Role (Staff level) #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">ROL</div>
         <div class="text-xl font-light font-roboto">
@@ -66,13 +66,13 @@
         </div>
       </div>
 
-      <!-- Site -->
+      {# Site #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">SEDE</div>
         <div class="text-xl font-light font-roboto">{{ object.site.name }}</div>
       </div>
 
-      <!-- Last login -->
+      {# Last login #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">ÚLTIMO ACCESO</div>
         <div class="text-xl font-light font-roboto">
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <!-- Date joined -->
+      {# Date joined #}
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">FECHA CREACIÓN</div>
         <div class="text-xl font-light font-roboto">
@@ -95,7 +95,7 @@
 
   </div>
 
-  <!-- Action buttons -->
+  {# Action buttons #}
   <div class="flex">
     <a href="{% url 'home' %}" class="btn btn-primary">VOLVER</a>
   </div>
