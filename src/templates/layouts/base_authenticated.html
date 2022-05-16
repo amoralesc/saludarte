@@ -43,15 +43,14 @@
           </a>
 
           {# Navigation items #}
-          {# 
-                Some navigation items are only shown to staff-level users:
-                - USUARIOS
+          {# Some navigation items are only shown to staff-level users: #}
+          {# - USUARIOS #}
                 
-                The if condition inside each li tells the element to be marked as active
-                if the current url view matches the app_name of the nav item.
+          {# The if condition inside each li tells the element to be marked as active #}
+          {# if the current url view matches the app_name of the nav item. #}
 
-                TODO: Fix url paths
-            #}
+          {# TODO: Fix url paths #}
+            
           <ul class="flex items-center gap-4 m-0 p-0 list-none">
 
             {# Get the current view name so it can be marked as active #}
@@ -93,7 +92,7 @@
             <button class="dropdown-button flex items-center gap-2 focus:outline-none" aria-label="Account menu">
               <img class="rounded-full h-8 w-8" src="{% static 'images/ic-account-circle-white.svg' %}" alt="" />
               <span class="md:inline-block text-white text-lg font-raleway">
-                {{ user.get_short_name }}
+                {{ request.user.get_short_name }}
             </button>
 
             <div class="dropdown absolute sm:right-0 lg:right-0 w-40 rounded-md shadow-lg z-30">

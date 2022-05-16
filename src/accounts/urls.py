@@ -8,11 +8,11 @@ from . import views
 app_name = "accounts"
 urlpatterns = [
     # name: accounts:profile, path: /cuenta/perfil/
-    path("perfil/", views.ProfilePageView.as_view(), name="profile"),
+    path("perfil/", views.ProfileView.as_view(), name="profile"),
     # name: accounts:edit_profile, path /cuenta/editar_perfil/
     path(
         "editar_perfil/",
-        views.EditProfilePageView.as_view(),
+        views.EditProfileView.as_view(),
         name="edit_profile",
     ),
     # name: accounts:password_change, path: /cuenta/cambiar_contraseña/

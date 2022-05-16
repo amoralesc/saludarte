@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 User = get_user_model()
@@ -41,13 +41,37 @@ class UsersIndexView(StaffMemberRequiredMixin, ListView):
         return User.objects.exclude(pk=self.request.user.pk)
 
 
-class UsersNewView(StaffMemberRequiredMixin, CreateView):
+class NewUserView(StaffMemberRequiredMixin, CreateView):
     """
-    It shows a form to create a new user.
+    It allows a staff user to create a new user.
+    It shows a form to input the user's data.
     """
 
     model = get_user_model()
     template_name = "users/new_user_form.html"
+    fields = [
+        "first_name",
+        "last_name",
+        "email",
+        "identification_type",
+        "identification_number",
+        "gender",
+        "is_staff",
+        "site",
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy("users:index")
+
+
+class EditUserView(StaffMemberRequiredMixin, UpdateView):
+    """
+    It allows a staff user to update an existing user.
+    It shows a form to edit the user's data.
+    """
+
+    model = get_user_model()
+    template_name = "users/edit_user_form.html"
     fields = [
         "first_name",
         "last_name",

@@ -1,29 +1,29 @@
 {% extends "layouts/base_authenticated.html" %}
 {% load static %}
 
-{% block title %}Editar perfil{% endblock %}
-
 {% block body %}
 
 <div class="flex flex-col gap-4 mx-auto">
 
   {# Page header #}
-  <h1 class="text-4xl text-center self-center font-raleway font-medium text-slate-800">Editar perfil</h1>
+  <h1 class="text-4xl text-center self-center font-raleway font-medium text-slate-800">
+  {% block page_header %}{% endblock %}
+  </h1>
 
   {# Form #}
   <form class="flex flex-col gap-4" method="post" action="">
     {% csrf_token %}
 
     {# Profile picture #}
-    <div class="flex flex-col items-start gap-2">
+    {# TODO: Implement #}
+    <div class="hidden flex-col items-start gap-2">
       <div class="text-left leading-4 text-lg font-raleway text-slate-800">FOTO DE PERFIL</div>
 
       <div class="flex gap-3">
         <img class="rounded-full h-40 w-40" src="{% static 'images/ic-account-circle-dark.svg' %}"
           alt="Profile picture" />
 
-        {# Profile picture action buttons 
-          TODO: Implement these buttons #}
+        {# Profile picture action buttons #}
         <div class="flex flex-col justify-center gap-2">
           <button class="btn btn-primary">
             SUBIR FOTO
@@ -40,7 +40,8 @@
       <div class="text-lg leading-4 font-raleway text-slate-800">NOMBRES</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <input type="text" name="first_name" id="id_first_name" placeholder="Nombres"
-          class="form-control input-text font-roboto" value="{{ form.first_name.value }}">
+          class="form-control input-text font-roboto" {% if form.first_name.value %}value="{{ form.first_name.value }}"
+          {% endif %} />
       </div>
 
       {% if form.first_name.errors %}
@@ -53,7 +54,8 @@
       <div class="text-lg leading-4 font-raleway text-slate-800">APELLIDOS</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <input type="text" name="last_name" id="id_last_name" placeholder="Apellidos"
-          class="form-control input-text font-roboto" value="{{ form.last_name.value }}">
+          class="form-control input-text font-roboto" {% if form.last_name.value %}value="{{ form.last_name.value }}"
+          {% endif %} />
       </div>
 
       {% if form.last_name.errors %}
@@ -67,7 +69,8 @@
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <div class="icon-email"></div>
         <input type="email" name="email" id="id_email" placeholder="Correo electrónico"
-          class="form-control input-text font-roboto" value="{{ form.email.value }}">
+          class="form-control input-text font-roboto" {% if form.email.value %}value="{{ form.email.value }}"
+          {% endif %} />
       </div>
 
       {% if form.email.errors %}
@@ -98,7 +101,7 @@
         <div class="form-group custom-input p-2 border rounded-md border-slate-800">
           <input type="text" name="identification_number" id="id_identification_number"
             placeholder="Número de documento" class="form-control input-text font-roboto"
-            value="{{ form.identification_number.value }}">
+            {% if form.identification_number.value %}value="{{ form.identification_number.value }}" {% endif %} />
         </div>
       </div>
 
@@ -120,10 +123,41 @@
       </select>
     </div>
 
+    {# Is staff (Role) #}
+    <div class="flex flex-col gap-2">
+      <div class="text-lg leading-4 font-raleway text-slate-800">ROL</div>
+
+      <select name="is_staff" id="id_is_staff"
+        class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
+        <option value="False" {% if form.is_staff.value == False %}selected{% endif %}>Encargado</option>
+        <option value="True" {% if form.is_staff.value ==  True %}selected{% endif %}>Administrador</option>
+      </select>
+
+      {% if form.is_staff.errors %}
+      <div class="error-message w-full leading-3 text-sm">{{ form.is_staff.errors|first }}</div>
+      {% endif %}
+    </div>
+
+    {# Site #}
+    <div class="flex flex-col gap-2">
+      <div class="text-lg leading-4 font-raleway text-slate-800">SEDE</div>
+      <select name="site" id="id_site" class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
+        {% for value, text in form.site.field.choices %}
+        <option value {% if value %}="{{ value }}" {% endif %} {% if value == form.site.value %}selected{% endif %}>
+          {{ text }}
+        </option>
+        {% endfor %}
+      </select>
+
+      {% if form.site.errors %}
+      <div class="error-message w-full leading-3 text-sm">{{ form.site.errors|first }}</div>
+      {% endif %}
+    </div>
+
     {# Action buttons #}
     <div class="flex gap-3">
       <input class="btn btn-primary" type="submit" value="GUARDAR" />
-      <a href="{% url 'accounts:profile' %}" class="btn btn-primary">CANCELAR</a>
+      <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-primary">CANCELAR</a>
     </div>
 
   </form>

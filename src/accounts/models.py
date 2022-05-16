@@ -145,6 +145,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     site = models.ForeignKey(
         Site,
         on_delete=models.SET_NULL,
+        default=1,
         null=True,
         blank=False,
     )

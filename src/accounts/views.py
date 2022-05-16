@@ -4,7 +4,7 @@ from django.views.generic import DetailView, UpdateView
 from django.contrib.auth import get_user_model
 
 
-class ProfilePageView(LoginRequiredMixin, DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     """
     It shows the profile page of the user. It includes all the information
     about the user, and some links to edit the user's profile.
@@ -18,13 +18,14 @@ class ProfilePageView(LoginRequiredMixin, DetailView):
         return self.request.user
 
 
-class EditProfilePageView(LoginRequiredMixin, UpdateView):
+class EditProfileView(LoginRequiredMixin, UpdateView):
     """
-    It allows the user to edit their profile.
+    It allows the user to edit their profile information.
     """
 
     model = get_user_model()
     template_name = "accounts/edit_profile_form.html"
+    # An user can't change their staff status and site
     fields = [
         "first_name",
         "last_name",
