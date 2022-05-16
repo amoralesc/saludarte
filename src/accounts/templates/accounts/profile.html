@@ -1,5 +1,7 @@
 {% extends "layouts/base_authenticated.html" %}
 {% load static %}
+{% load tz %}
+
 
 {% block title %}Perfil{% endblock %}
 
@@ -73,13 +75,21 @@
       <!-- Last login -->
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">ÚLTIMO ACCESO</div>
-        <div class="text-xl font-light font-roboto">{{ object.last_login|date:"d/m/Y H:i" }}</div>
+        <div class="text-xl font-light font-roboto">
+          {% timezone "America/Bogota" %}
+          {{ object.last_login|date:"d/m/Y H:i" }}
+          {% endtimezone %}
+        </div>
       </div>
 
       <!-- Date joined -->
       <div class="flex flex-col">
         <div class="text-lg leading-4 font-raleway text-slate-800">FECHA CREACIÓN</div>
-        <div class="text-xl font-light font-roboto">{{ object.date_joined|date:"d/m/Y H:i" }}</div>
+        <div class="text-xl font-light font-roboto">
+          {% timezone "America/Bogota" %}
+          {{ object.date_joined|date:"d/m/Y H:i" }}
+          {% endtimezone %}
+        </div>
       </div>
     </div>
 
