@@ -31,7 +31,7 @@ NUIP = 4
 IDENTIFICATION_TYPE_CHOICES = (
     (CC, "C.C."),
     (CE, "C.E."),
-    (PA, "Passport"),
+    (PA, "Pasaporte"),
     (NUIP, "NUIP"),
 )
 

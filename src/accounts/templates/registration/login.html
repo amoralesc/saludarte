@@ -34,7 +34,7 @@
 
   <!-- If email and password aren't valid -->
   {% if form.errors %}
-  <div class="error-message">
+  <div class="error-message w-full">
     El correo o contraseña son inválidos
   </div>
   {% endif %}
@@ -42,11 +42,11 @@
   <!-- If login required or permission required is triggered -->
   {% if next %}
   {% if user.is_authenticated %}
-  <div class="error-message">
+  <div class="error-message w-full">
     No tienes permisos para acceder a esta página
   </div>
   {% else %}
-  <div class="error-message">
+  <div class="error-message w-full">
     Inicia sesión para acceder a esta página
   </div>
   {% endif %}
