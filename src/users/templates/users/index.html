@@ -1,9 +1,44 @@
 {% extends "layouts/base_authenticated.html" %}
+{% load static %}
 
 {% block title %}Usuarios{% endblock %}
 
 {% block body %}
-{% for user in users %}
-{{ user }}
-{% endfor %}
+
+<div class="container flex flex-col gap-4 mx-auto">
+
+  <!-- Action buttons -->
+  <div class="flex gap-3">
+    <a href="" class="btn btn-primary">NUEVO USUARIO</a>
+  </div>
+
+  <!-- Users table, rendered using datatables (js) -->
+  <table id="datatable" class="display">
+    <!-- Table header -->
+    <thead>
+      <tr>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Rol</th>
+        <th>Sede</th>
+        <th>Último acceso</th>
+      </tr>
+    </thead>
+
+    <!-- Table body -->
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{% if user.is_staff %}Administrador{% else %}Encargado{% endif %}</td>
+        <td>{{ user.site.name }}</td>
+        <td>{{ user.last_login }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
 {% endblock %}

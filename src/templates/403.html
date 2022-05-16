@@ -1,0 +1,13 @@
+{% extends "layouts/base_authenticated.html" %}
+
+{% block title %}Acceso denegado{% endblock %}
+
+{% block body %}
+
+<div class="max-w-md flex flex-col items-center gap-2 self-center">
+  <h1 class="text-3xl font-raleway font-semibold text-slate-800">Acceso denegado</h1>
+  <p class="text-lg font-raleway">No tienes permiso para acceder a esta página</p>
+  <a href="{% url 'home' %}" class="font-roboto"><u>Presiona aquí para volver al inicio</u></a>
+</div>
+
+{% endblock %}
