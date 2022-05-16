@@ -20,7 +20,7 @@ class ProfilePageView(LoginRequiredMixin, DetailView):
 
 class EditProfilePageView(LoginRequiredMixin, UpdateView):
     """
-    It allows the user to edit his profile.
+    It allows the user to edit their profile.
     """
 
     model = get_user_model()

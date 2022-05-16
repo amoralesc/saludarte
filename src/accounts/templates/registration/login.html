@@ -12,12 +12,12 @@
     <form class="flex flex-col gap-4" method="post" action="{% url 'login' %}">
       {% csrf_token %}
 
-      <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
+      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <div class="icon-email"></div>
         <input type="email" name="username" placeholder="Correo electrónico" class="form-control input-text">
       </div>
 
-      <div class="form-group custom-input p-2 border-2 rounded-md border-slate-800">
+      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <div class="icon-lock"></div>
         <input type="password" name="password" placeholder="Contraseña" class="form-control input-text">
       </div>

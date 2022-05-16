@@ -1,5 +1,5 @@
 {% extends "layouts/base_authenticated.html" %}
-{% load static %}
+
 {# TODO: Timezones are kinda broken and need to be manually set #}
 {% load tz %}
 
@@ -11,7 +11,7 @@
 
   <!-- Action buttons -->
   <div class="flex gap-3">
-    <a href="" class="btn btn-primary">NUEVO USUARIO</a>
+    <a href="{% url 'users:new' %}" class="btn btn-primary">NUEVO USUARIO</a>
   </div>
 
   <!-- Users table, rendered using datatables (js) -->

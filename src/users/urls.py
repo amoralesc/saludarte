@@ -8,4 +8,6 @@ app_name = "users"
 urlpatterns = [
     # name: users:index, path: /usuarios/
     path("", views.UsersIndexView.as_view(), name="index"),
+    # name: users:new, path: /usuarios/nuevo/
+    path("nuevo/", views.UsersNewView.as_view(), name="new"),
 ]

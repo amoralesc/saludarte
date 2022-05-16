@@ -7,7 +7,14 @@ var dt = require("datatables.net")(window, $);
 $(document).ready(function () {
   $("#datatable").DataTable({
     language: {
-      url: '../static/datatables.es-ES.json'
-    }
+      url: "../static/datatables.es-ES.json",
+    },
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: 5,
+      },
+    ],
   });
 });
