@@ -1,7 +1,11 @@
-from django.contrib.auth import get_user_model
-
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+
+from django.contrib.auth import get_user_model
+
+# from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.forms import PasswordResetForm
+
 from django.http import (
     HttpResponseNotAllowed,
     HttpResponseRedirect,
@@ -9,24 +13,11 @@ from django.http import (
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.forms import PasswordResetForm
+
+from core.views import StaffMemberRequiredMixin
+
 
 User = get_user_model()
-
-
-class StaffMemberRequiredMixin(UserPassesTestMixin):
-    """Verify that the current user is a staff member."""
-
-    login_url = reverse_lazy("login")
-
-    def test_func(self):
-        """
-        Only staff members can access this view.
-        Redirects to the login page if the user is not authenticated.
-        Raises a PermissionDenied exception (403) if the user is not a staff member.
-        """
-        return self.request.user.is_authenticated and self.request.user.is_staff
 
 
 class UsersIndexView(StaffMemberRequiredMixin, ListView):
