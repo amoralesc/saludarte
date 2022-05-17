@@ -41,7 +41,7 @@ class Person(models.Model):
         blank=True,
     )
 
-    identification_type = models.PositiveSmallIntegerField(
+    identification_type = models.SmallIntegerField(
         "identification type",
         choices=IDENTIFICATION_TYPE_CHOICES,
         default=CC,

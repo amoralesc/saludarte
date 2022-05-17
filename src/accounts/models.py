@@ -5,6 +5,8 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
+from core.models import Person
+
 
 class Site(models.Model):
     """
@@ -89,7 +91,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, Person, PermissionsMixin):
     """
     Custom user model. It uses the email as the username (identifier).
     """
@@ -97,25 +99,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Abstract user has default fields for:
     # password, last_login
 
-    # Base account fields:
+    # Person has default fields for:
+    # first_name, last_name, identification_type, identification_number, gender
 
     email = models.EmailField(
         "email",
         unique=True,
         max_length=255,
         blank=False,
-    )
-
-    first_name = models.CharField(
-        "first name",
-        max_length=128,
-        blank=True,
-    )
-
-    last_name = models.CharField(
-        "last name",
-        max_length=128,
-        blank=True,
     )
 
     is_staff = models.BooleanField(
@@ -141,8 +132,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=timezone.now,
     )
 
-    # Profile information fields:
-
     site = models.ForeignKey(
         Site,
         on_delete=models.SET_NULL,
@@ -151,53 +140,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=False,
     )
 
-    identification_type = models.SmallIntegerField(
-        "identification type",
-        choices=IDENTIFICATION_TYPE_CHOICES,
-        default=CC,
-        null=True,
-        blank=True,
-    )
-
-    identification_number = models.CharField(
-        "identification number",
-        max_length=32,
-        blank=True,
-    )
-
-    gender = models.SmallIntegerField(
-        "gender",
-        choices=GENDER_CHOICES,
-        default=UNDEFINED,
-    )
-
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-
-    def get_full_name(self):
-        """
-        Returns the first_name plus the last_name, with a space in between.
-        """
-        full_name = "%s %s" % (self.first_name, self.last_name)
-        return full_name.strip()
-
-    def get_short_name(self):
-        """
-        Returns the first name of the user.
-        """
-        return self.first_name
-
-    def get_formatted_identification(self):
-        """
-        Returns the identification type and number of the user.
-        """
-        if self.identification_type is not None:
-            return "{} {}".format(
-                self.get_identification_type_display(),
-                self.identification_number,
-            )
-        elif self.identification_number is not None:
-            return self.identification_number
-        else:
-            return ""
