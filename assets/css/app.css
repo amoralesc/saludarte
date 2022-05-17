@@ -87,11 +87,15 @@
 }
 
 .input-text {
-  padding-left: 12px;
+  padding-left: 6px;
   float: left;
   outline: none;
   border: none;
   background-color: white;
+}
+
+.input-text.with-icon-input {
+  padding-left: 12px;
 }
 
 .custom-input {
