@@ -15,6 +15,10 @@
   <form class="flex flex-col gap-4" method="post" action="">
     {% csrf_token %}
 
+    {% for field in form|get_fields:"first_name" %}
+    {{ field.label }}
+    {% endfor %}
+
     {# Profile picture #}
     {# TODO: Implement #}
     <div class="hidden flex-col items-start gap-2">
