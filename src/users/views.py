@@ -57,10 +57,13 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
     """
     It allows a staff user to create a new user.
     It shows a form to input the user's data.
+    It also sends a welcome email to the user with a link to reset their password.
     """
 
     model = get_user_model()
     template_name = "users/new_user_form.html"
+    # The password is not included because it is left blank when a new
+    # user is created. The welcome email has a link to reset the password.
     fields = [
         "first_name",
         "last_name",

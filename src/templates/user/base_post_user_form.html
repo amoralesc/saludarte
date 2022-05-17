@@ -162,7 +162,7 @@
     </div>
     -->
 
-    {# Gender, site #}
+    {# Gender, Site #}
     {% for field in form|get_fields:"gender,site" %}
 
     <div class="flex flex-col gap-2">
@@ -196,6 +196,7 @@
       <div class="message error w-full leading-3 text-sm">{{ form.is_staff.errors|first }}</div>
       {% endif %}
     </div>
+
 
     {# Action buttons #}
     <div class="flex gap-3">

@@ -15,8 +15,8 @@ class Site(models.Model):
     Implements a default global site, that encompasses all the sites.
     """
 
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
+    name = models.CharField("nombre", max_length=100)
+    address = models.CharField("dirección", max_length=255)
 
     def __str__(self):
         return self.name
@@ -112,6 +112,7 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
 
     site = models.ForeignKey(
         Site,
+        verbose_name="sede",
         on_delete=models.SET_NULL,
         default=1,
         null=True,

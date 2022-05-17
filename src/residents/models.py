@@ -88,6 +88,7 @@ class Relative(Person):
 
     resident = models.ForeignKey(
         Resident,
+        verbose_name="familiares",
         on_delete=models.CASCADE,
         null=False,
         blank=False,
