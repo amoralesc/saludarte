@@ -44,7 +44,7 @@ class Person(models.Model):
     identification_type = models.PositiveSmallIntegerField(
         "identification type",
         choices=IDENTIFICATION_TYPE_CHOICES,
-        default=IDENTIFICATION_TYPE_CHOICES.CC,
+        default=CC,
         null=True,
         blank=True,
     )
@@ -58,7 +58,7 @@ class Person(models.Model):
     gender = models.SmallIntegerField(
         "gender",
         choices=GENDER_CHOICES,
-        default=GENDER_CHOICES.UNDEFINED,
+        default=UNDEFINED,
     )
 
     def get_full_name(self):
