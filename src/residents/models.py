@@ -1,6 +1,10 @@
 from django.db import models
 from core.models import Person
 
+from django.utils import timezone
+
+from accounts.models import Site
+
 
 class Resident(Person):
     """
@@ -10,6 +14,14 @@ class Resident(Person):
     # Person model includes:
     # first_name, last_name, identification_type, identification_number,
 
+    site = models.ForeignKey(
+        Site,
+        verbose_name="sede",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+    )
+
     date_birth = models.DateField(
         "fecha de nacimiento",
         blank=True,
@@ -18,6 +30,7 @@ class Resident(Person):
 
     date_joined = models.DateField(
         "fecha de ingreso",
+        default=timezone.now,
         blank=True,
         null=True,
     )
