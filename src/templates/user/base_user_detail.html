@@ -7,10 +7,10 @@
 {% block body %}
 
 <div class="flex flex-col gap-4 mx-auto">
-  <div class=" flex flex-wrap justify-center gap-8 px-10 py-6 border-2 rounded-md border-slate-800">
+  <div class="flex flex-wrap justify-center gap-8 px-10 py-6 border-2 rounded-md border-slate-800">
 
-    {# Left side: profile picture and action buttons #}
-    <div class="flex flex-col items-center gap-3">
+    {# Left side: profile picture and block #}
+    <div class="flex flex-col items-stretch gap-3">
 
       {# Profile picture #}
       <div class="flex flex-col items-center gap-2">
@@ -19,8 +19,8 @@
           alt="Profile picture" />
       </div>
 
-      {# Profile action buttons #}
-      {% block profile_actions_buttons %}{% endblock %}
+      {# Left side other options #}
+      {% block left_side_block %}{% endblock %}
 
     </div>
 

@@ -35,12 +35,13 @@
         <th>ROL</th>
         <th>SEDE</th>
         <th>ÚLTIMO ACCESO</th>
+        <th>ESTADO</th>
         <th>ACCIONES</th>
       </tr>
     </thead>
 
     {# Table body #}
-    <tbody class="font-roboto">
+    <tbody class="font-raleway">
       {% for user in users %}
       <tr>
         <td>{{ user.email }}</td>
@@ -53,12 +54,33 @@
           {{ user.last_login|date:"d/m/Y H:i" }}
           {% endtimezone %}
         </td>
+        <td>
+          {% if user.is_active %}
+          <span class="text-green-800">Habilitado</span>
+          {% else %}
+          <span class="text-red-800">Deshabilitado</span>
+          {% endif %}
+        </td>
         <td class="flex flex-wrap gap-2">
           <a href="{% url 'users:view' user.id %}" class="btn btn-primary py-1">VER</a>
           <a href="{% url 'users:edit' user.id %}" class="btn btn-primary py-1">EDITAR</a>
+          
           <form action="{% url 'users:delete' user.id %}" method="post">
             {% csrf_token %}
             <input type="submit" class="btn btn-primary py-1" value="ELIMINAR" />
+          </form>
+
+          <form action="{% url 'users:update_is_active' user.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+          
+            {% if user.is_active %}
+            <input type="hidden" name="is_active" value="False">
+            <input type="submit" class="btn btn-primary py-1" value="DESHABILITAR" />
+            {% else %}
+            <input type="hidden" name="is_active" value="True">
+            <input type="submit" class="btn btn-primary py-1" value="HABILITAR" />
+            {% endif %}
           </form>
         </td>
       </tr>

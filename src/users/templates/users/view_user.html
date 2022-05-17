@@ -2,15 +2,42 @@
 
 {% block title %}Ver usuario{% endblock %}
 
+{# User is active state #}
+{% block left_side_block %}
+<div class="mt-1 flex flex-col">
+  <div class="text-lg leading-4 font-raleway text-slate-800">ESTADO</div>
+  <div class="text-xl font-light font-roboto">
+    {% if user.is_active %}
+    <span class="text-green-800">Habilitado</span>
+    {% else %}
+    <span class="text-red-800">Deshabilitado</span>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
 {# Page action buttons #}
 {% block page_actions_buttons %}
 
 <a href="{% url 'users:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
 <a href="{% url 'users:edit' object.id %}" class="btn btn-primary self-stretch">EDITAR</a>
-<a href="" class="btn btn-primary self-stretch">INHABILITAR</a>
+
 <form action="{% url 'users:delete' object.id %}" method="post">
   {% csrf_token %}
   <input type="submit" class="btn btn-primary" value="ELIMINAR" />
+</form>
+
+<form action="{% url 'users:update_is_active' object.id %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.path }}">
+
+  {% if user.is_active %}
+  <input type="hidden" name="is_active" value="False">
+  <input type="submit" class="btn btn-primary" value="DESHABILITAR" />
+  {% else %}
+  <input type="hidden" name="is_active" value="True">
+  <input type="submit" class="btn btn-primary" value="HABILITAR" />
+  {% endif %}
 </form>
 
 {% endblock %}

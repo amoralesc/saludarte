@@ -3,8 +3,8 @@
 {% block title %}Perfil{% endblock %}
 
 {# Profile action buttons #}
-{% block profile_actions_buttons %}
-<a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary self-stretch">EDITAR PERFIL</a>
+{% block left_side_block %}
+<a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary mt-1 self-stretch">EDITAR PERFIL</a>
 <a href="{% url 'accounts:password_change' %}" class="btn btn-primary self-stretch">CAMBIAR CONTRASEÑA</a>
 <a href="{% url 'logout' %}" class="btn btn-primary self-stretch">CERRAR SESIÓN</a>
 {% endblock %}

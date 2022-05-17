@@ -93,6 +93,9 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
         Also calls super to save the user in the database.
         """
 
+        messages.success(
+            self.request, "El usuario ha sido creado exitosamente."
+        )
         redirect = super().form_valid(form)
 
         # Create a password reset form with the email of the new user.
@@ -135,16 +138,31 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
         return reverse_lazy("users:index")
 
 
+class UpdateUserIsActiveView(StaffMemberRequiredMixin, UpdateView):
+    """
+    If called, it updates the is_active field of the user to its
+    opposite.
+    """
+
+    http_method_names = ["post"]
+    model = get_user_model()
+    fields = ["is_active"]
+
+    # Redirect to the path in next or defaults to the users index.
+    def get_success_url(self):
+        return self.request.POST.get("next", reverse_lazy("users:index"))
+
+
 @staff_member_required(login_url=reverse_lazy("login"))
 def delete_user(request, user_id):
     """
     Deletes an user given its id.
     """
 
-    if request.method == "POST":
+    if request.method == "POST" or request.method == "DELETE":
         user = get_object_or_404(User, pk=user_id)
         user.delete()
         messages.success(request, "El usuario ha sido eliminado exitosamente.")
         return HttpResponseRedirect(reverse_lazy("users:index"))
     else:
-        return HttpResponseNotAllowed()
+        return HttpResponseNotAllowed(["post", "delete"])
