@@ -14,4 +14,6 @@ urlpatterns = [
     path("nuevo/", views.NewUserView.as_view(), name="new"),
     # name: users:edit, path: /usuarios/<pk>/editar/
     path("<int:pk>/editar/", views.EditUserView.as_view(), name="edit"),
+    # name: users:delete, path: /usuarios/<user_id>/eliminar/
+    path("<int:user_id>/eliminar/", views.delete_user, name="delete"),
 ]

@@ -1,4 +1,12 @@
 from django.contrib.auth import get_user_model
+
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import (
+    HttpResponseNotAllowed,
+    HttpResponseRedirect,
+)
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -127,7 +135,16 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
         return reverse_lazy("users:index")
 
 
-def delete_user(request):
+@staff_member_required(login_url=reverse_lazy("login"))
+def delete_user(request, user_id):
     """
-    Deletes the user.
+    Deletes an user given its id.
     """
+
+    if request.method == "POST":
+        user = get_object_or_404(User, pk=user_id)
+        user.delete()
+        messages.success(request, "El usuario ha sido eliminado exitosamente.")
+        return HttpResponseRedirect(reverse_lazy("users:index"))
+    else:
+        return HttpResponseNotAllowed()

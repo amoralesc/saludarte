@@ -8,6 +8,9 @@
 <a href="{% url 'users:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
 <a href="{% url 'users:edit' object.id %}" class="btn btn-primary self-stretch">EDITAR</a>
 <a href="" class="btn btn-primary self-stretch">INHABILITAR</a>
-<a href="" class="btn btn-primary self-stretch">ELIMINAR</a>
+<form action="{% url 'users:delete' object.id %}" method="post">
+  {% csrf_token %}
+  <input type="submit" class="btn btn-primary" value="ELIMINAR" />
+</form>
 
 {% endblock %}

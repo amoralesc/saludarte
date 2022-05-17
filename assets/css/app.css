@@ -109,10 +109,14 @@ input:-webkit-autofill:active {
 /* Messages */
 @layer components {
   .message {
-    @apply p-2 rounded-md font-light font-roboto max-w-fit;
+    @apply p-2 rounded-md font-light font-roboto;
   }
 
   .message.error {
     @apply text-center bg-red-400;
+  }
+
+  .message.success {
+    @apply bg-green-300;
   }
 }
