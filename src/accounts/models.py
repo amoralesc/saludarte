@@ -100,6 +100,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Base account fields:
 
     email = models.EmailField(
+        "email",
         unique=True,
         max_length=255,
         blank=False,
@@ -107,13 +108,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(
         "first name",
-        max_length=30,
+        max_length=128,
         blank=True,
     )
 
     last_name = models.CharField(
         "last name",
-        max_length=150,
+        max_length=128,
         blank=True,
     )
 
@@ -150,7 +151,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=False,
     )
 
-    identification_type = models.PositiveSmallIntegerField(
+    identification_type = models.SmallIntegerField(
+        "identification type",
         choices=IDENTIFICATION_TYPE_CHOICES,
         default=CC,
         null=True,
@@ -158,11 +160,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     identification_number = models.CharField(
-        max_length=20,
+        "identification number",
+        max_length=32,
         blank=True,
     )
 
     gender = models.SmallIntegerField(
+        "gender",
         choices=GENDER_CHOICES,
         default=UNDEFINED,
     )
