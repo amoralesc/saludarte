@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils.translation import gettext_lazy as _
+
 
 CC = 1
 CE = 2
@@ -9,7 +11,7 @@ NUIP = 4
 IDENTIFICATION_TYPE_CHOICES = (
     (CC, "C.C."),
     (CE, "C.E."),
-    (PA, "Pasaporte"),
+    (PA, _("Passport")),
     (NUIP, "NUIP"),
 )
 
@@ -18,9 +20,9 @@ FEMALE = 2
 UNDEFINED = 3
 
 GENDER_CHOICES = (
-    (MALE, "Masculino"),
-    (FEMALE, "Feminino"),
-    (UNDEFINED, "No definido"),
+    (MALE, _("Male")),
+    (FEMALE, _("Feminino")),
+    (UNDEFINED, _("Not defined")),
 )
 
 
@@ -30,19 +32,19 @@ class Person(models.Model):
     """
 
     first_name = models.CharField(
-        "first name",
+        _("names"),
         max_length=128,
         blank=True,
     )
 
     last_name = models.CharField(
-        "last name",
+        _("lastnames"),
         max_length=128,
         blank=True,
     )
 
     identification_type = models.SmallIntegerField(
-        "identification type",
+        _("identification type"),
         choices=IDENTIFICATION_TYPE_CHOICES,
         default=CC,
         null=True,
@@ -50,13 +52,13 @@ class Person(models.Model):
     )
 
     identification_number = models.CharField(
-        "identification number",
+        _("identification number"),
         max_length=32,
         blank=True,
     )
 
     gender = models.SmallIntegerField(
-        "gender",
+        _("gender"),
         choices=GENDER_CHOICES,
         default=UNDEFINED,
     )

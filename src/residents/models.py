@@ -1,6 +1,8 @@
 from django.db import models
 from core.models import Person
 
+from django.utils.translation import gettext_lazy as _
+
 
 class Resident(Person):
     """
@@ -11,19 +13,19 @@ class Resident(Person):
     # first_name, last_name, identification_type, identification_number,
 
     date_birth = models.DateField(
-        "date of birth",
+        _("date of birth"),
         blank=True,
         null=True,
     )
 
     date_joined = models.DateField(
-        "date joined",
+        _("date of join"),
         blank=True,
         null=True,
     )
 
     eps = models.CharField(
-        "eps",
+        "EPS",
         max_length=128,
         blank=True,
     )
@@ -59,7 +61,7 @@ class Relative(Person):
     # first_name, last_name, identification_type, identification_number, gender
 
     kinship = models.SmallIntegerField(
-        "kinship",
+        _("kinship"),
         choices=KINSHIP_CHOICES,
         default=OTHER,
     )
@@ -71,18 +73,18 @@ class Relative(Person):
     )
 
     contact_number = models.CharField(
-        "contact number (WhatsApp)",
+        _("contact number (WhatsApp)"),
         max_length=32,
         blank=True,
     )
 
     email_alerts = models.BooleanField(
-        "email alerts",
+        _("email alerts"),
         default=False,
     )
 
     whatsapp_alerts = models.BooleanField(
-        "whatsapp alerts",
+        _("whatsapp alerts"),
         default=False,
     )
 

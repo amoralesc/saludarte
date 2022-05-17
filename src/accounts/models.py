@@ -1,5 +1,7 @@
 from django.db import models
+
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -21,31 +23,8 @@ class Site(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Site"
-        verbose_name_plural = "Sites"
-
-
-CC = 1
-CE = 2
-PA = 3
-NUIP = 4
-
-IDENTIFICATION_TYPE_CHOICES = (
-    (CC, "C.C."),
-    (CE, "C.E."),
-    (PA, "Pasaporte"),
-    (NUIP, "NUIP"),
-)
-
-MALE = 1
-FEMALE = 2
-UNDEFINED = 3
-
-GENDER_CHOICES = (
-    (MALE, "Masculino"),
-    (FEMALE, "Feminino"),
-    (UNDEFINED, "No definido"),
-)
+        verbose_name = _("Site")
+        verbose_name_plural = _("Sites")
 
 
 class UserManager(BaseUserManager):
@@ -58,7 +37,7 @@ class UserManager(BaseUserManager):
         Extra fields may be passed to be stored on the user.
         """
         if not email:
-            raise ValueError("The given email must be set")
+            raise ValueError(_("The given email must be set"))
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -110,7 +89,7 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
     )
 
     is_staff = models.BooleanField(
-        "staff status",
+        _("role"),
         default=False,
         help_text=(
             "Designates whether the user can log into " "this admin site."
@@ -118,7 +97,7 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
     )
 
     is_active = models.BooleanField(
-        "active",
+        _("state"),
         default=True,
         help_text=(
             "Designates whether this user should be "
@@ -128,7 +107,7 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
     )
 
     date_joined = models.DateTimeField(
-        "date joined",
+        _("date of join"),
         default=timezone.now,
     )
 
@@ -143,3 +122,7 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
+
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
