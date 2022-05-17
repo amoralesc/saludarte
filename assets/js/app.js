@@ -19,3 +19,19 @@ $(document).ready(function () {
     ],
   });
 });
+
+$(document).ready(function () {
+  $("#residents-datatable").DataTable({
+    language: {
+      url: "../static/datatables.es-ES.json",
+    },
+    // Disable sorting on the 4th column (actions)
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: 3,
+      },
+    ],
+  });
+});

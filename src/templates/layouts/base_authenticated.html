@@ -59,14 +59,14 @@
             {# Only staff users can access these views #}
             {% if request.user.is_staff %}
             <li class="nav-item {% if 'users' in app_names %}active{% endif %}">
-              <a href="{% url 'users:index'%}" class="text-lg font-raleway">
+              <a href="{% url 'users:index' %}" class="text-lg font-raleway">
                 USUARIOS
               </a>
             </li>
             {% endif %}
 
-            <li class="nav-item {% if 'TODO:' in app_names %}active{% endif %}">
-              <a href="{% url 'home'%}" class="text-lg font-raleway">
+            <li class="nav-item {% if 'residents' in app_names %}active{% endif %}">
+              <a href="{% url 'residents:index' %}" class="text-lg font-raleway">
                 RESIDENTES
               </a>
             </li>
