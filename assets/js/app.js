@@ -5,15 +5,16 @@ var $ = require("jquery");
 var dt = require("datatables.net")(window, $);
 
 $(document).ready(function () {
-  $("#datatable").DataTable({
+  $("#users-datatable").DataTable({
     language: {
       url: "../static/datatables.es-ES.json",
     },
+    // Disable sorting on the 7th column (actions)
     columnDefs: [
       {
         searchable: false,
         orderable: false,
-        targets: 5,
+        targets: 6,
       },
     ],
   });

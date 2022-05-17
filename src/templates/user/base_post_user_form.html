@@ -45,7 +45,7 @@
       </div>
 
       {% if form.first_name.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.first_name.errors|first }}</div>
+      <div class="message error w-full leading-3 text-sm">{{ form.first_name.errors|first }}</div>
       {% endif %}
     </div>
 
@@ -59,7 +59,7 @@
       </div>
 
       {% if form.last_name.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.last_name.errors|first }}</div>
+      <div class="message error w-full leading-3 text-sm">{{ form.last_name.errors|first }}</div>
       {% endif %}
     </div>
 
@@ -74,7 +74,7 @@
       </div>
 
       {% if form.email.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.email.errors|first }}</div>
+      <div class="message error w-full leading-3 text-sm">{{ form.email.errors|first }}</div>
       {% endif %}
     </div>
 
@@ -106,7 +106,7 @@
       </div>
 
       {% if form.identification_number.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.identification_number.errors|first }}</div>
+      <div class="message error leading-3 text-sm">{{ form.identification_number.errors|first }}</div>
       {% endif %}
     </div>
 
@@ -134,7 +134,7 @@
       </select>
 
       {% if form.is_staff.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.is_staff.errors|first }}</div>
+      <div class="message error w-full leading-3 text-sm">{{ form.is_staff.errors|first }}</div>
       {% endif %}
     </div>
 
@@ -150,14 +150,14 @@
       </select>
 
       {% if form.site.errors %}
-      <div class="error-message w-full leading-3 text-sm">{{ form.site.errors|first }}</div>
+      <div class="message error w-full leading-3 text-sm">{{ form.site.errors|first }}</div>
       {% endif %}
     </div>
 
     {# Action buttons #}
     <div class="flex gap-3">
       <input class="btn btn-primary" type="submit" value="GUARDAR" />
-      <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-primary">CANCELAR</a>
+      <a href="{% url 'users:index' %}" class="btn btn-primary">CANCELAR</a>
     </div>
 
   </form>

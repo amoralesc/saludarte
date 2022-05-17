@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.forms import PasswordResetForm
 
 User = get_user_model()
 
@@ -36,9 +37,23 @@ class UsersIndexView(StaffMemberRequiredMixin, ListView):
     def get_queryset(self):
         """
         Returns all the users in the database.
-        (not including the currently authenticated user).
+        (not including the currently authenticated user nor superusers).
         """
-        return User.objects.exclude(pk=self.request.user.pk)
+        return User.objects.exclude(pk=self.request.user.pk).exclude(
+            is_superuser=True
+        )
+
+
+class UserDetailView(StaffMemberRequiredMixin, DetailView):
+    """
+    It shows the details of a specific user.
+    Offers actions to edit the user:
+    - Edit the user
+    - Delete the user
+    """
+
+    model = get_user_model()
+    template_name = "users/view_user.html"
 
 
 class NewUserView(StaffMemberRequiredMixin, CreateView):
@@ -63,6 +78,31 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("users:index")
 
+    def form_valid(self, form):
+        """
+        If user creation form was valid, sends a welcome email
+        to the user with a link to reset their password.
+        Also calls super to save the user in the database.
+        """
+
+        redirect = super().form_valid(form)
+
+        # Create a password reset form with the email of the new user.
+        password_reset_form = PasswordResetForm(
+            {"email": form["email"].value()}
+        )
+
+        # Send the welcome email with the password reset link.
+        password_reset_form.is_valid()
+        password_reset_form.save(
+            request=self.request,
+            use_https=self.request.is_secure(),
+            subject_template_name="users/new_user_email_subject.txt",
+            email_template_name="users/new_user_email.html",
+        )
+
+        return redirect
+
 
 class EditUserView(StaffMemberRequiredMixin, UpdateView):
     """
@@ -85,3 +125,9 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("users:index")
+
+
+def delete_user(request):
+    """
+    Deletes the user.
+    """

@@ -9,16 +9,27 @@
 
 <div class="container flex flex-col gap-4 mx-auto">
 
+  {% if messages %}
+  <div class="flex flex-col gap-3">
+    {% for message in messages %}
+    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   {# Action buttons #}
   <div class="flex gap-3">
     <a href="{% url 'users:new' %}" class="btn btn-primary">NUEVO USUARIO</a>
   </div>
 
   {# Users table, rendered using datatables (js) #}
-  <table id="datatable" class="display compact">
+  <table id="users-datatable" class="display compact">
     {# Table header #}
     <thead>
       <tr class="font-raleway text-slate-800">
+        <th>USUARIO</th>
         <th>NOMBRES</th>
         <th>APELLIDOS</th>
         <th>ROL</th>
@@ -32,6 +43,7 @@
     <tbody class="font-roboto">
       {% for user in users %}
       <tr>
+        <td>{{ user.email }}</td>
         <td>{{ user.first_name }}</td>
         <td>{{ user.last_name }}</td>
         <td>{% if user.is_staff %}Administrador{% else %}Encargado{% endif %}</td>
@@ -42,7 +54,7 @@
           {% endtimezone %}
         </td>
         <td class="flex flex-wrap gap-2">
-          <a href="" class="btn btn-primary py-1">VER</a>
+          <a href="{% url 'users:view' user.id %}" class="btn btn-primary py-1">VER</a>
           <a href="{% url 'users:edit' user.id %}" class="btn btn-primary py-1">EDITAR</a>
           <a href="" class="btn btn-primary py-1">ELIMINAR</a>
         </td>

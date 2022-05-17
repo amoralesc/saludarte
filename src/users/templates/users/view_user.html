@@ -1,0 +1,13 @@
+{% extends "user/base_user_detail.html" %}
+
+{% block title %}Ver usuario{% endblock %}
+
+{# Page action buttons #}
+{% block page_actions_buttons %}
+
+<a href="{% url 'users:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
+<a href="{% url 'users:edit' object.id %}" class="btn btn-primary self-stretch">EDITAR</a>
+<a href="" class="btn btn-primary self-stretch">INHABILITAR</a>
+<a href="" class="btn btn-primary self-stretch">ELIMINAR</a>
+
+{% endblock %}

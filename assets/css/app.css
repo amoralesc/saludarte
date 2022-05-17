@@ -106,9 +106,13 @@ input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
-/* Error message */
+/* Messages */
 @layer components {
-  .error-message {
-    @apply p-2 rounded-md text-center font-light font-roboto bg-red-400;
+  .message {
+    @apply p-2 rounded-md font-light font-roboto max-w-fit;
+  }
+
+  .message.error {
+    @apply text-center bg-red-400;
   }
 }
