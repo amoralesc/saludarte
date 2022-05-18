@@ -9,12 +9,12 @@ $(document).ready(function () {
     language: {
       url: "../static/datatables.es-ES.json",
     },
-    // Disable sorting on the 7th column (actions)
+    // Disable sorting on the 8th column (actions)
     columnDefs: [
       {
         searchable: false,
         orderable: false,
-        targets: 6,
+        targets: 7,
       },
     ],
   });
