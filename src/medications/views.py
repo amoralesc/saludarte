@@ -48,7 +48,7 @@ def create_medication(request):
         medication_form = MedicationForm(request.POST)
         presentation_formset = PresentationFormSet(request.POST, request.FILES)
 
-        if medication_form.is_valid():
+        if medication_form.is_valid() and presentation_formset.is_valid():
             medication = medication_form.save()
 
             for presentation_form in presentation_formset:
