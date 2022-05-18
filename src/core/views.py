@@ -11,6 +11,7 @@ class StaffMemberRequiredMixin(UserPassesTestMixin):
         """
         Only staff members can access this view.
         Redirects to the login page if the user is not authenticated.
-        Raises a PermissionDenied exception (403) if the user is not a staff member.
+        Raises a PermissionDenied exception (403) if the user is not
+        a staff member.
         """
         return self.request.user.is_authenticated and self.request.user.is_staff
