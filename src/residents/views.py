@@ -36,7 +36,7 @@ class OnlyAccessMySiteResidentsMixin(UserPassesTestMixin):
 class ResidentsIndexView(LoginRequiredMixin, ListView):
     """
     It shows a list of all the residents in the database.
-    Offers actions to alter the users:
+    Offers actions to alter the residents:
     - Create a new resident
     - View an existing resident
     - Edit an existing resident

@@ -14,7 +14,9 @@ from .models import Resident, Relative
 from .views import OnlyAccessMySiteResidentsMixin
 
 
-class NewRelativeView(LoginRequiredMixin, CreateView):
+class NewRelativeView(
+    LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, CreateView
+):
     """
     It shows a form to create a new relative.
     """
