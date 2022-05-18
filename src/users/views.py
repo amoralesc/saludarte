@@ -10,7 +10,13 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 
 from core.views import StaffMemberRequiredMixin
 
@@ -146,16 +152,15 @@ class UpdateUserIsActiveView(StaffMemberRequiredMixin, UpdateView):
         return self.request.POST.get("next", reverse_lazy("users:index"))
 
 
-@staff_member_required(login_url=reverse_lazy("login"))
-def delete_user(request, pk):
+class DeleteUserView(StaffMemberRequiredMixin, DeleteView):
     """
     Deletes an user given its id.
     """
 
-    if request.method == "POST" or request.method == "DELETE":
-        user = get_object_or_404(User, pk=pk)
-        user.delete()
-        messages.success(request, "El usuario ha sido eliminado exitosamente.")
-        return HttpResponseRedirect(reverse_lazy("users:index"))
-    else:
-        return HttpResponseNotAllowed(["post", "delete"])
+    model = get_user_model()
+
+    def get_success_url(self):
+        messages.success(
+            self.request, "El usuario ha sido eliminado exitosamente."
+        )
+        return reverse_lazy("users:index")

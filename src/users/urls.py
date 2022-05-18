@@ -20,5 +20,5 @@ urlpatterns = [
         name="update_is_active",
     ),
     # name: users:delete, path: /usuarios/<pk>/eliminar/
-    path("<int:pk>/eliminar/", views.delete_user, name="delete"),
+    path("<int:pk>/eliminar/", views.DeleteUserView.as_view(), name="delete"),
 ]
