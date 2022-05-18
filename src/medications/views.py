@@ -8,7 +8,7 @@ from django.views.generic import (
     ListView,
     #    CreateView,
     #    UpdateView,
-    #    DeleteView,
+    DeleteView,
 )
 
 from .models import Medication
@@ -26,3 +26,17 @@ class MedicationsIndexView(LoginRequiredMixin, ListView):
     model = Medication
     context_object_name = "medications"
     template_name = "medications/index.html"
+
+
+class DeleteMedicationView(LoginRequiredMixin, DeleteView):
+    """
+    Deletes a medication given its id.
+    """
+
+    model = Medication
+
+    def get_success_url(self):
+        messages.success(
+            self.request, "El medicamento ha sido eliminado exitosamente."
+        )
+        return reverse_lazy("medications:index")

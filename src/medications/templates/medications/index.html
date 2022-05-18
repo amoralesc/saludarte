@@ -52,14 +52,11 @@
           <div class="flex flex-wrap items-start gap-2">
             <a href="" class="btn btn-primary py-1">EDITAR</a>
 
-            <!--
-          <form action="" method="post"
-            onsubmit="return confirm('¿Estás seguro que deseas eliminar este medicamento? Esta acción es irreversible');">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-primary py-1" value="ELIMINAR" />
-          </form>
-
-        -->
+            <form action="{% url 'medications:delete' medication.id %}" method="post"
+              onsubmit="return confirm('¿Estás seguro que deseas eliminar este medicamento? Esta acción es irreversible');">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-primary py-1" value="ELIMINAR" />
+            </form>
           </div>
         </td>
       </tr>
