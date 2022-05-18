@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 from core.models import Person
 
 from django.utils import timezone
@@ -40,6 +41,9 @@ class Resident(Person):
         max_length=128,
         blank=True,
     )
+
+    def get_absolute_url(self):
+        return reverse_lazy("residents:detail", kwargs={"pk": self.pk})
 
 
 SPOUSE = 1
