@@ -237,11 +237,8 @@
 
       {% for relative in relatives %}
 
-      <form action="{% url 'residents:edit_relative' view.kwargs.pk relative.id %}" method="post"
-        class="relative_item_edit {% if forloop.counter != 1 %}hidden{% endif %}">
-        {% csrf_token %}
-        <input type="submit" class="btn btn-primary" value="EDITAR" />
-      </form>
+      <a href="{% url 'residents:edit_relative' view.kwargs.pk relative.id %}"
+        class="btn btn-primary self-stretch relative_item_edit {% if forloop.counter != 1 %}hidden{% endif %}">EDITAR</a>
 
       <form action="{% url 'residents:delete_relative' view.kwargs.pk relative.id %}" method="post"
         onsubmit="return confirm('¿Estás seguro que deseas eliminar este familiar? Esta acción es irreversible');"
