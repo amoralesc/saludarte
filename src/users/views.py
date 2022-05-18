@@ -76,6 +76,9 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
     ]
 
     def get_success_url(self):
+        messages.success(
+            self.request, "El usuario ha sido creado exitosamente."
+        )
         return reverse_lazy("users:index")
 
     def form_valid(self, form):
@@ -85,9 +88,6 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
         Also calls super to save the user in the database.
         """
 
-        messages.success(
-            self.request, "El usuario ha sido creado exitosamente."
-        )
         redirect = super().form_valid(form)
 
         # Create a password reset form with the email of the new user.
@@ -126,8 +126,8 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
         "site",
     ]
 
-    def get_success_url(self):
-        return reverse_lazy("users:index")
+    # def get_success_url(self):
+    #    return reverse_lazy("users:index")
 
 
 class UpdateUserIsActiveView(StaffMemberRequiredMixin, UpdateView):

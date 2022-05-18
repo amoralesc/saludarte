@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse_lazy
 
 from django.utils import timezone
 
@@ -126,3 +127,6 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
+
+    def get_absolute_url(self):
+        return reverse_lazy("users:view", kwargs={"pk": self.pk})

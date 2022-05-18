@@ -63,8 +63,7 @@
         </td>
         <td class="flex flex-wrap gap-2">
           <a href="{% url 'users:view' user.id %}" class="btn btn-primary py-1">VER</a>
-          <a href="{% url 'users:edit' user.id %}" class="btn btn-primary py-1">EDITAR</a>
-
+          
           <form action="{% url 'users:delete' user.id %}" method="post"
             onsubmit="return confirm('¿Estás seguro que deseas eliminar este usuario? Esta acción es irreversible');">
             {% csrf_token %}

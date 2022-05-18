@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
@@ -28,10 +29,6 @@ class NewResidentView(LoginRequiredMixin, CreateView):
 
     model = Resident
     template_name = "residents/new_resident_form.html"
-
-    def get_success_url(self):
-        return reverse_lazy("residents:index")
-
     fields = [
         "first_name",
         "last_name",
@@ -43,3 +40,9 @@ class NewResidentView(LoginRequiredMixin, CreateView):
         "date_joined",
         "eps",
     ]
+
+    def get_success_url(self):
+        messages.success(
+            self.request, "El residente ha sido creado exitosamente."
+        )
+        return reverse_lazy("residents:index")
