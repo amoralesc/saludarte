@@ -129,4 +129,4 @@ class User(AbstractBaseUser, Person, PermissionsMixin):
         verbose_name_plural = "Usuarios"
 
     def get_absolute_url(self):
-        return reverse_lazy("users:view", kwargs={"pk": self.pk})
+        return reverse_lazy("users:detail", kwargs={"pk": self.pk})

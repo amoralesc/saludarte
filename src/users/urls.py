@@ -7,8 +7,8 @@ app_name = "users"
 urlpatterns = [
     # name: users:index, path: /usuarios/
     path("", views.UsersIndexView.as_view(), name="index"),
-    # name: users:view, path: /usuarios/<pk>/,
-    path("<int:pk>/", views.UserDetailView.as_view(), name="view"),
+    # name: users:detail, path: /usuarios/<pk>/,
+    path("<int:pk>/", views.DetailUserView.as_view(), name="detail"),
     # name: users:new, path: /usuarios/nuevo/
     path("nuevo/", views.NewUserView.as_view(), name="new"),
     # name: users:edit, path: /usuarios/<pk>/editar/
@@ -19,6 +19,6 @@ urlpatterns = [
         views.UpdateUserIsActiveView.as_view(),
         name="update_is_active",
     ),
-    # name: users:delete, path: /usuarios/<user_id>/eliminar/
-    path("<int:user_id>/eliminar/", views.delete_user, name="delete"),
+    # name: users:delete, path: /usuarios/<pk>/eliminar/
+    path("<int:pk>/eliminar/", views.delete_user, name="delete"),
 ]

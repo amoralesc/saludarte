@@ -41,16 +41,16 @@ class UsersIndexView(StaffMemberRequiredMixin, ListView):
         )
 
 
-class UserDetailView(StaffMemberRequiredMixin, DetailView):
+class DetailUserView(StaffMemberRequiredMixin, DetailView):
     """
     It shows the details of a specific user.
     Offers actions to edit the user:
-    - Edit the user
+    - Edit the user's information
     - Delete the user
     """
 
     model = get_user_model()
-    template_name = "users/view_user.html"
+    template_name = "users/detail_user.html"
 
 
 class NewUserView(StaffMemberRequiredMixin, CreateView):
@@ -147,13 +147,13 @@ class UpdateUserIsActiveView(StaffMemberRequiredMixin, UpdateView):
 
 
 @staff_member_required(login_url=reverse_lazy("login"))
-def delete_user(request, user_id):
+def delete_user(request, pk):
     """
     Deletes an user given its id.
     """
 
     if request.method == "POST" or request.method == "DELETE":
-        user = get_object_or_404(User, pk=user_id)
+        user = get_object_or_404(User, pk=pk)
         user.delete()
         messages.success(request, "El usuario ha sido eliminado exitosamente.")
         return HttpResponseRedirect(reverse_lazy("users:index"))
