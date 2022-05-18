@@ -133,9 +133,6 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
         "site",
     ]
 
-    # def get_success_url(self):
-    #    return reverse_lazy("users:index")
-
 
 class UpdateUserIsActiveView(StaffMemberRequiredMixin, UpdateView):
     """

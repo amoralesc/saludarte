@@ -11,6 +11,8 @@ urlpatterns = [
     path("<int:pk>/", views.DetailResidentView.as_view(), name="detail"),
     # name: residents:new, path: /residentes/nuevo/
     path("nuevo/", views.NewResidentView.as_view(), name="new"),
+    # name: residents:edit, path: /residentes/<pk>/editar/
+    path("<int:pk>/editar/", views.EditResidentView.as_view(), name="edit"),
     # name: residents:delete, path: /residentes/<pk>/eliminar/
     path(
         "<int:pk>/eliminar/",

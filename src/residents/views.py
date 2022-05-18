@@ -1,11 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 
 from .models import Resident
 
@@ -66,7 +71,7 @@ class DetailResidentView(
     """
 
     model = Resident
-    template_name = "users/detail_user.html"
+    template_name = "residents/detail_resident.html"
 
 
 class NewResidentView(LoginRequiredMixin, CreateView):
@@ -93,6 +98,26 @@ class NewResidentView(LoginRequiredMixin, CreateView):
             self.request, "El residente ha sido creado exitosamente."
         )
         return reverse_lazy("residents:index")
+
+
+class EditResidentView(LoginRequiredMixin, UpdateView):
+    """
+    It shows a form to edit an existing resident.
+    """
+
+    model = Resident
+    template_name = "residents/edit_resident.html"
+    fields = [
+        "first_name",
+        "last_name",
+        "identification_type",
+        "identification_number",
+        "gender",
+        "site",
+        "date_birth",
+        "date_joined",
+        "eps",
+    ]
 
 
 class DeleteResidentView(
