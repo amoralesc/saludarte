@@ -48,6 +48,11 @@
         <td class="flex flex-wrap gap-2">
           <a href="" class="btn btn-primary py-1">VER</a>
 
+          <form action="{% url 'residents:delete' resident.id %}" method="post"
+            onsubmit="return confirm('¿Estás seguro que deseas eliminar este residente? Esta acción es irreversible');">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary py-1" value="ELIMINAR" />
+          </form>
         </td>
       </tr>
       {% endfor %}

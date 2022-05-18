@@ -1,5 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.http import HttpResponseNotAllowed, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
 from django.views.generic import ListView, CreateView
@@ -46,3 +49,19 @@ class NewResidentView(LoginRequiredMixin, CreateView):
             self.request, "El residente ha sido creado exitosamente."
         )
         return reverse_lazy("residents:index")
+
+
+def delete_resident(request, resident_id):
+    """
+    Deletes a resident given its id.
+    """
+
+    if request.method == "POST" or request.method == "DELETE":
+        resident = get_object_or_404(Resident, pk=resident_id)
+        resident.delete()
+        messages.success(
+            request, "El residente ha sido eliminado exitosamente."
+        )
+        return HttpResponseRedirect(reverse_lazy("residents:index"))
+    else:
+        return HttpResponseNotAllowed(["post", "delete"])
