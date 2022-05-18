@@ -34,30 +34,26 @@ PILL = 3
 DROPS = 4
 SYRUP = 5
 INJECTION = 6
-INHALER = 7
 
 
 PRESENTATION_TYPE_CHOICES = (
-    (TABLET, "Tableta"),
-    (CAPSULE, "Cápsula"),
-    (PILL, "Pastilla"),
+    (TABLET, "Tabletas"),
+    (CAPSULE, "Cápsulas"),
+    (PILL, "Pastillas"),
     (DROPS, "Gotas"),
     (SYRUP, "Jarabe"),
     (INJECTION, "Inyección"),
-    (INHALER, "Inhalador"),
 )
 
 
 MG = 1
 MG_PER_ML = 3
 CONCENTRATION = 4
-UNIT = 4
 
 PRESENTATION_MEASURE_UNIT_CHOICES = (
     (MG, "mg"),
     (MG_PER_ML, "mg/ml"),
     (CONCENTRATION, "%"),
-    (UNIT, "unidad"),
 )
 
 
@@ -95,8 +91,9 @@ class Presentation(models.Model):
         verbose_name = "Presentación"
         verbose_name_plural = "Presentaciones"
 
-    def get_measure_formatted(self):
-        return "{0} {1}".format(
+    def get_formatted_measure(self):
+        return "{0} {1} {2}".format(
+            self.get_type_display(),
             self.measure,
             self.get_measure_unit_display(),
         )

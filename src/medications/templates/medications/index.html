@@ -1,0 +1,72 @@
+{% extends "layouts/base_authenticated.html" %}
+
+{% block title %}Medicamentos{% endblock %}
+
+{% block body %}
+
+<div class="container flex flex-col gap-4 mx-auto">
+
+  {% if messages %}
+  <div class="flex flex-col gap-3">
+    {% for message in messages %}
+    <div class="message w-full {% if message.tags %}{{ message.tags }}{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# Action buttons #}
+  <div class="flex gap-3">
+    <a href="" class="btn btn-primary">NUEVO MEDICAMENTO</a>
+  </div>
+
+  {# Medications table, rendered using datatables (js) #}
+  <table id="medications-datatable" class="display compact">
+    {# Table header #}
+    <thead>
+      <tr class="font-raleway text-slate-800">
+        <th>MEDICAMENTO</th>
+        <th>PRESENTACIONES</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+
+    {# Table body #}
+    <tbody class="font-raleway">
+      {% for medication in medications %}
+      <tr>
+        <td>{{ medication.name }}</td>
+        <td>
+          <table class="display compact">
+            {% for presentation in medication.presentation_set.all %}
+            <tr>
+              <td>{{ presentation.get_formatted_measure }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </td>
+
+        {# Actions #}
+        <td>
+          <div class="flex flex-wrap items-start gap-2">
+            <a href="" class="btn btn-primary py-1">EDITAR</a>
+
+            <!--
+          <form action="" method="post"
+            onsubmit="return confirm('¿Estás seguro que deseas eliminar este medicamento? Esta acción es irreversible');">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary py-1" value="ELIMINAR" />
+          </form>
+
+        -->
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

@@ -35,4 +35,5 @@ urlpatterns = [
     # accounts / reset/done / [name= 'password_reset_complete']
     path("usuarios/", include("users.urls")),
     path("residentes/", include("residents.urls")),
+    path("medicamentos/", include("medications.urls")),
 ]
