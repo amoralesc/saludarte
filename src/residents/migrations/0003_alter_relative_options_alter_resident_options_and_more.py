@@ -8,117 +8,204 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0005_alter_site_options_alter_user_options_and_more'),
-        ('residents', '0002_alter_relative_identification_type_and_more'),
+        ("accounts", "0005_alter_site_options_alter_user_options_and_more"),
+        ("residents", "0002_alter_relative_identification_type_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='relative',
-            options={'verbose_name': 'Familiar', 'verbose_name_plural': 'Familiares'},
+            name="relative",
+            options={
+                "verbose_name": "Familiar",
+                "verbose_name_plural": "Familiares",
+            },
         ),
         migrations.AlterModelOptions(
-            name='resident',
-            options={'verbose_name': 'Persona', 'verbose_name_plural': 'Personas'},
+            name="resident",
+            options={
+                "verbose_name": "Persona",
+                "verbose_name_plural": "Personas",
+            },
         ),
         migrations.AddField(
-            model_name='resident',
-            name='site',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.site', verbose_name='sede'),
+            model_name="resident",
+            name="site",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="accounts.site",
+                verbose_name="sede",
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='contact_number',
-            field=models.CharField(blank=True, max_length=32, verbose_name='número de contacto'),
+            model_name="relative",
+            name="contact_number",
+            field=models.CharField(
+                blank=True, max_length=32, verbose_name="número de contacto"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='email',
-            field=models.EmailField(blank=True, max_length=255, verbose_name='correo electrónico'),
+            model_name="relative",
+            name="email",
+            field=models.EmailField(
+                blank=True, max_length=255, verbose_name="correo electrónico"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='email_alerts',
-            field=models.BooleanField(default=False, verbose_name='alertas por correo electrónico'),
+            model_name="relative",
+            name="email_alerts",
+            field=models.BooleanField(
+                default=False, verbose_name="alertas por correo electrónico"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='nombres'),
+            model_name="relative",
+            name="first_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="nombres"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='gender',
-            field=models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Femenino'), (3, 'No definido')], default=3, verbose_name='género'),
+            model_name="relative",
+            name="gender",
+            field=models.SmallIntegerField(
+                choices=[(1, "Masculino"), (2, "Femenino"), (3, "No definido")],
+                default=3,
+                verbose_name="género",
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='identification_number',
-            field=models.CharField(blank=True, max_length=32, verbose_name='número de documento'),
+            model_name="relative",
+            name="identification_number",
+            field=models.CharField(
+                blank=True, max_length=32, verbose_name="número de documento"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='tipo de documento'),
+            model_name="relative",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                default=1,
+                null=True,
+                verbose_name="tipo de documento",
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='kinship',
-            field=models.SmallIntegerField(choices=[(1, 'Cónyuge'), (2, 'Padre / Madre'), (3, 'Hermano / Hermana'), (4, 'Hijo / Hija'), (5, 'Abuelo / Abuela'), (6, 'Familiar'), (7, 'Amigo / Allegado'), (8, 'Otro')], default=8, verbose_name='parentesco'),
+            model_name="relative",
+            name="kinship",
+            field=models.SmallIntegerField(
+                choices=[
+                    (1, "Cónyuge"),
+                    (2, "Padre / Madre"),
+                    (3, "Hermano / Hermana"),
+                    (4, "Hijo / Hija"),
+                    (5, "Abuelo / Abuela"),
+                    (6, "Familiar"),
+                    (7, "Amigo / Allegado"),
+                    (8, "Otro"),
+                ],
+                default=8,
+                verbose_name="parentesco",
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='apellidos'),
+            model_name="relative",
+            name="last_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="apellidos"
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='resident',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='residents.resident', verbose_name='familiares'),
+            model_name="relative",
+            name="resident",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="residents.resident",
+                verbose_name="familiares",
+            ),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='whatsapp_alerts',
-            field=models.BooleanField(default=False, verbose_name='alertas por WhatsApp'),
+            model_name="relative",
+            name="whatsapp_alerts",
+            field=models.BooleanField(
+                default=False, verbose_name="alertas por WhatsApp"
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='date_birth',
-            field=models.DateField(blank=True, null=True, verbose_name='fecha de nacimiento'),
+            model_name="resident",
+            name="date_birth",
+            field=models.DateField(
+                blank=True, null=True, verbose_name="fecha de nacimiento"
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='date_joined',
-            field=models.DateField(blank=True, default=django.utils.timezone.now, null=True, verbose_name='fecha de ingreso'),
+            model_name="resident",
+            name="date_joined",
+            field=models.DateField(
+                blank=True,
+                default=django.utils.timezone.now,
+                null=True,
+                verbose_name="fecha de ingreso",
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='eps',
-            field=models.CharField(blank=True, max_length=128, verbose_name='EPS'),
+            model_name="resident",
+            name="eps",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="EPS"
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='nombres'),
+            model_name="resident",
+            name="first_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="nombres"
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='gender',
-            field=models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Femenino'), (3, 'No definido')], default=3, verbose_name='género'),
+            model_name="resident",
+            name="gender",
+            field=models.SmallIntegerField(
+                choices=[(1, "Masculino"), (2, "Femenino"), (3, "No definido")],
+                default=3,
+                verbose_name="género",
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='identification_number',
-            field=models.CharField(blank=True, max_length=32, verbose_name='número de documento'),
+            model_name="resident",
+            name="identification_number",
+            field=models.CharField(
+                blank=True, max_length=32, verbose_name="número de documento"
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='tipo de documento'),
+            model_name="resident",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                default=1,
+                null=True,
+                verbose_name="tipo de documento",
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='apellidos'),
+            model_name="resident",
+            name="last_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="apellidos"
+            ),
         ),
     ]

@@ -6,28 +6,51 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('residents', '0003_alter_relative_options_alter_resident_options_and_more'),
+        (
+            "residents",
+            "0003_alter_relative_options_alter_resident_options_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='relative',
-            name='first_name',
-            field=models.CharField(max_length=128, verbose_name='nombres'),
+            model_name="relative",
+            name="first_name",
+            field=models.CharField(max_length=128, verbose_name="nombres"),
         ),
         migrations.AlterField(
-            model_name='relative',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], null=True, verbose_name='tipo de documento'),
+            model_name="relative",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                null=True,
+                verbose_name="tipo de documento",
+            ),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='first_name',
-            field=models.CharField(max_length=128, verbose_name='nombres'),
+            model_name="resident",
+            name="first_name",
+            field=models.CharField(max_length=128, verbose_name="nombres"),
         ),
         migrations.AlterField(
-            model_name='resident',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], null=True, verbose_name='tipo de documento'),
+            model_name="resident",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                null=True,
+                verbose_name="tipo de documento",
+            ),
         ),
     ]

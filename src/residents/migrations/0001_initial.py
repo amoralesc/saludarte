@@ -8,45 +8,203 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Resident',
+            name="Resident",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(blank=True, max_length=128, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=128, verbose_name='last name')),
-                ('identification_type', models.PositiveSmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='identification type')),
-                ('identification_number', models.CharField(blank=True, max_length=32, verbose_name='identification number')),
-                ('gender', models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Feminino'), (3, 'No definido')], default=3, verbose_name='gender')),
-                ('date_birth', models.DateField(blank=True, null=True, verbose_name='date of birth')),
-                ('date_joined', models.DateField(blank=True, null=True, verbose_name='date joined')),
-                ('eps', models.CharField(blank=True, max_length=128, verbose_name='eps')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=128, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=128, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "identification_type",
+                    models.PositiveSmallIntegerField(
+                        blank=True,
+                        choices=[
+                            (1, "C.C."),
+                            (2, "C.E."),
+                            (3, "Pasaporte"),
+                            (4, "NUIP"),
+                        ],
+                        default=1,
+                        null=True,
+                        verbose_name="identification type",
+                    ),
+                ),
+                (
+                    "identification_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=32,
+                        verbose_name="identification number",
+                    ),
+                ),
+                (
+                    "gender",
+                    models.SmallIntegerField(
+                        choices=[
+                            (1, "Masculino"),
+                            (2, "Feminino"),
+                            (3, "No definido"),
+                        ],
+                        default=3,
+                        verbose_name="gender",
+                    ),
+                ),
+                (
+                    "date_birth",
+                    models.DateField(
+                        blank=True, null=True, verbose_name="date of birth"
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateField(
+                        blank=True, null=True, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "eps",
+                    models.CharField(
+                        blank=True, max_length=128, verbose_name="eps"
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Relative',
+            name="Relative",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(blank=True, max_length=128, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=128, verbose_name='last name')),
-                ('identification_type', models.PositiveSmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='identification type')),
-                ('identification_number', models.CharField(blank=True, max_length=32, verbose_name='identification number')),
-                ('gender', models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Feminino'), (3, 'No definido')], default=3, verbose_name='gender')),
-                ('kinship', models.SmallIntegerField(choices=[(1, 'Cónyuge'), (2, 'Padre / Madre'), (3, 'Hermano / Hermana'), (4, 'Hijo / Hija'), (5, 'Abuelo / Abuela'), (6, 'Familiar'), (7, 'Amigo / Allegado'), (8, 'Otro')], default=8, verbose_name='kinship')),
-                ('email', models.EmailField(blank=True, max_length=255, verbose_name='email')),
-                ('contact_number', models.CharField(blank=True, max_length=32, verbose_name='contact number (WhatsApp)')),
-                ('email_alerts', models.BooleanField(default=False, verbose_name='email alerts')),
-                ('whatsapp_alerts', models.BooleanField(default=False, verbose_name='whatsapp alerts')),
-                ('resident', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='residents.resident')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=128, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=128, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "identification_type",
+                    models.PositiveSmallIntegerField(
+                        blank=True,
+                        choices=[
+                            (1, "C.C."),
+                            (2, "C.E."),
+                            (3, "Pasaporte"),
+                            (4, "NUIP"),
+                        ],
+                        default=1,
+                        null=True,
+                        verbose_name="identification type",
+                    ),
+                ),
+                (
+                    "identification_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=32,
+                        verbose_name="identification number",
+                    ),
+                ),
+                (
+                    "gender",
+                    models.SmallIntegerField(
+                        choices=[
+                            (1, "Masculino"),
+                            (2, "Feminino"),
+                            (3, "No definido"),
+                        ],
+                        default=3,
+                        verbose_name="gender",
+                    ),
+                ),
+                (
+                    "kinship",
+                    models.SmallIntegerField(
+                        choices=[
+                            (1, "Cónyuge"),
+                            (2, "Padre / Madre"),
+                            (3, "Hermano / Hermana"),
+                            (4, "Hijo / Hija"),
+                            (5, "Abuelo / Abuela"),
+                            (6, "Familiar"),
+                            (7, "Amigo / Allegado"),
+                            (8, "Otro"),
+                        ],
+                        default=8,
+                        verbose_name="kinship",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=255, verbose_name="email"
+                    ),
+                ),
+                (
+                    "contact_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=32,
+                        verbose_name="contact number (WhatsApp)",
+                    ),
+                ),
+                (
+                    "email_alerts",
+                    models.BooleanField(
+                        default=False, verbose_name="email alerts"
+                    ),
+                ),
+                (
+                    "whatsapp_alerts",
+                    models.BooleanField(
+                        default=False, verbose_name="whatsapp alerts"
+                    ),
+                ),
+                (
+                    "resident",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="residents.resident",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

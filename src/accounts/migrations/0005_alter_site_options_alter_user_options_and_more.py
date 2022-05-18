@@ -8,76 +8,119 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_alter_user_identification_type'),
+        ("accounts", "0004_alter_user_identification_type"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='site',
-            options={'verbose_name': 'Sede', 'verbose_name_plural': 'Sedes'},
+            name="site",
+            options={"verbose_name": "Sede", "verbose_name_plural": "Sedes"},
         ),
         migrations.AlterModelOptions(
-            name='user',
-            options={'verbose_name': 'Usuario', 'verbose_name_plural': 'Usuarios'},
+            name="user",
+            options={
+                "verbose_name": "Usuario",
+                "verbose_name_plural": "Usuarios",
+            },
         ),
         migrations.AlterField(
-            model_name='site',
-            name='address',
-            field=models.CharField(max_length=255, verbose_name='dirección'),
+            model_name="site",
+            name="address",
+            field=models.CharField(max_length=255, verbose_name="dirección"),
         ),
         migrations.AlterField(
-            model_name='site',
-            name='name',
-            field=models.CharField(max_length=100, verbose_name='nombre'),
+            model_name="site",
+            name="name",
+            field=models.CharField(max_length=100, verbose_name="nombre"),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='date_joined',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='fecha de ingreso'),
+            model_name="user",
+            name="date_joined",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name="fecha de ingreso",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='email',
-            field=models.EmailField(max_length=255, unique=True, verbose_name='correo electrónico'),
+            model_name="user",
+            name="email",
+            field=models.EmailField(
+                max_length=255, unique=True, verbose_name="correo electrónico"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='nombres'),
+            model_name="user",
+            name="first_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="nombres"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='gender',
-            field=models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Femenino'), (3, 'No definido')], default=3, verbose_name='género'),
+            model_name="user",
+            name="gender",
+            field=models.SmallIntegerField(
+                choices=[(1, "Masculino"), (2, "Femenino"), (3, "No definido")],
+                default=3,
+                verbose_name="género",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='identification_number',
-            field=models.CharField(blank=True, max_length=32, verbose_name='número de documento'),
+            model_name="user",
+            name="identification_number",
+            field=models.CharField(
+                blank=True, max_length=32, verbose_name="número de documento"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='tipo de documento'),
+            model_name="user",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                default=1,
+                null=True,
+                verbose_name="tipo de documento",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='is_active',
-            field=models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='estado'),
+            model_name="user",
+            name="is_active",
+            field=models.BooleanField(
+                default=True,
+                help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                verbose_name="estado",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='is_staff',
-            field=models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='rol'),
+            model_name="user",
+            name="is_staff",
+            field=models.BooleanField(
+                default=False,
+                help_text="Designates whether the user can log into this admin site.",
+                verbose_name="rol",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='apellidos'),
+            model_name="user",
+            name="last_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="apellidos"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='site',
-            field=models.ForeignKey(default=1, null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.site', verbose_name='sede'),
+            model_name="user",
+            name="site",
+            field=models.ForeignKey(
+                default=1,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="accounts.site",
+                verbose_name="sede",
+            ),
         ),
     ]

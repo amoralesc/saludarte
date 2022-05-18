@@ -7,43 +7,71 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='email',
-            field=models.EmailField(max_length=255, unique=True, verbose_name='email'),
+            model_name="user",
+            name="email",
+            field=models.EmailField(
+                max_length=255, unique=True, verbose_name="email"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='first name'),
+            model_name="user",
+            name="first_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="first name"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='gender',
-            field=models.SmallIntegerField(choices=[(1, 'Masculino'), (2, 'Feminino'), (3, 'No definido')], default=3, verbose_name='gender'),
+            model_name="user",
+            name="gender",
+            field=models.SmallIntegerField(
+                choices=[(1, "Masculino"), (2, "Feminino"), (3, "No definido")],
+                default=3,
+                verbose_name="gender",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='identification_number',
-            field=models.CharField(blank=True, max_length=32, verbose_name='identification number'),
+            model_name="user",
+            name="identification_number",
+            field=models.CharField(
+                blank=True, max_length=32, verbose_name="identification number"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='identification_type',
-            field=models.SmallIntegerField(blank=True, choices=[(1, 'C.C.'), (2, 'C.E.'), (3, 'Pasaporte'), (4, 'NUIP')], default=1, null=True, verbose_name='identification type'),
+            model_name="user",
+            name="identification_type",
+            field=models.SmallIntegerField(
+                blank=True,
+                choices=[
+                    (1, "C.C."),
+                    (2, "C.E."),
+                    (3, "Pasaporte"),
+                    (4, "NUIP"),
+                ],
+                default=1,
+                null=True,
+                verbose_name="identification type",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=128, verbose_name='last name'),
+            model_name="user",
+            name="last_name",
+            field=models.CharField(
+                blank=True, max_length=128, verbose_name="last name"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='site',
-            field=models.ForeignKey(default=1, null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.site'),
+            model_name="user",
+            name="site",
+            field=models.ForeignKey(
+                default=1,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="accounts.site",
+            ),
         ),
     ]
