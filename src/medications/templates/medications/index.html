@@ -18,7 +18,7 @@
 
   {# Action buttons #}
   <div class="flex gap-3">
-    <a href="" class="btn btn-primary">NUEVO MEDICAMENTO</a>
+    <a href="{% url 'medications:create' %}" class="btn btn-primary">NUEVO MEDICAMENTO</a>
   </div>
 
   {# Medications table, rendered using datatables (js) #}

@@ -1,0 +1,101 @@
+{% extends "layouts/base_authenticated.html" %}
+{% load form_extras %}
+
+{% block title %}Crear medicamento{% endblock %}
+
+{% block body %}
+
+<div class="flex flex-col gap-4 mx-auto">
+
+  {# Page header #}
+  <h1 class="text-4xl text-center self-center font-raleway font-medium text-slate-800">
+    Crear medicamento
+  </h1>
+
+  {# Form #}
+  <form class="flex flex-col gap-4" method="post" action="">
+    {% csrf_token %}
+
+    {# Medication form #}
+    {% with field=medication_form|get_fields:"name"|first %}
+    <div class="flex flex-col gap-2">
+      <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
+      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
+        <input type="text" name="{{ field.name }}" id="id_{{ field.name }}" placeholder="{{ field.label }}"
+          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
+      </div>
+
+      {% if field.errors %}
+      <div class="message error w-full leading-3 text-sm">{{ field.errors|first }}</div>
+      {% endif %}
+    </div>
+    {% endwith %}
+
+    {% with field=medication_form|get_fields:"description"|first %}
+    <div class="flex flex-col gap-2">
+      <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
+      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
+        <textarea name="{{ field.name }}" id="id_{{ field.name }}" placeholder="{{ field.label }}" maxlength="512"
+          class="form-control input-text font-roboto">{% if field.value %}{{ field.value }}{% endif %}</textarea>
+      </div>
+
+      {% if field.errors %}
+      <div class="message error w-full leading-3 text-sm">{{ field.errors|first }}</div>
+      {% endif %}
+    </div>
+    {% endwith %}
+
+    {# Presentation formset #}
+    {{ formset.management_form }}
+
+    <table class="table border-separate -mx-3" style="border-spacing: 12px 0;">
+      <thead>
+        <tr class="text-left text-lg font-raleway text-slate-800">
+          <th><span style="font-weight:normal;">PRESENTACIÓN</span></th>
+          <th><span style="font-weight:normal;">UNIDAD DE MEDIDA</span>
+          </th>
+          <th><span style="font-weight:normal;">MEDIDA</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in presentation_formset %}
+        <tr>
+          {% for field in form|get_fields:"type,measure_unit" %}
+          <td>
+            <select name="{{ field.name }}" id="id_{{ field.name }}"
+              class="w-full px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
+              {% for value, text in field.field.choices %}
+              <option value {% if value %}="{{ value }}" {% endif %}
+                {% if value|to_int == field.value|to_int %}selected{% endif %}>
+                {{ text }}
+              </option>
+              {% endfor %}
+            </select>
+          </td>
+          {% endfor %}
+
+          <td>
+            {% with field=form|get_fields:"measure"|first %}
+            <div class="form-group custom-input p-2 border rounded-md border-slate-800">
+              <input type="text" name="{{ field.name }}" id="id_{{ field.name }}" placeholder="{{ field.label }}"
+                class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
+            </div>
+            {% endwith %}
+          </td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    {# Action buttons #}
+    <div class="flex gap-3">
+      <input class="btn btn-primary" type="submit" value="GUARDAR" />
+      <a href="{% url 'medications:index' %}" class="btn btn-primary">CANCELAR</a>
+    </div>
+  </form>
+
+
+</div>
+
+{% endblock %}
