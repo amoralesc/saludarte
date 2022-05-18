@@ -32,7 +32,7 @@ class Person(models.Model):
     first_name = models.CharField(
         "nombres",
         max_length=128,
-        blank=True,
+        blank=False,
     )
 
     last_name = models.CharField(
@@ -44,7 +44,6 @@ class Person(models.Model):
     identification_type = models.SmallIntegerField(
         "tipo de documento",
         choices=IDENTIFICATION_TYPE_CHOICES,
-        default=CC,
         null=True,
         blank=True,
     )
@@ -56,9 +55,7 @@ class Person(models.Model):
     )
 
     gender = models.SmallIntegerField(
-        "género",
-        choices=GENDER_CHOICES,
-        default=UNDEFINED,
+        "género", choices=GENDER_CHOICES, default=UNDEFINED, blank=False
     )
 
     def get_full_name(self):
