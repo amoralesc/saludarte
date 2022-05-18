@@ -73,6 +73,7 @@ class Presentation(models.Model):
     type = models.SmallIntegerField(
         "tipo",
         choices=PRESENTATION_TYPE_CHOICES,
+        null=False,
         blank=False,
     )
 
