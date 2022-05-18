@@ -22,7 +22,8 @@
 <a href="{% url 'users:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
 <a href="{% url 'users:edit' object.id %}" class="btn btn-primary self-stretch">EDITAR</a>
 
-<form action="{% url 'users:delete' object.id %}" method="post">
+<form action="{% url 'users:delete' object.id %}" method="post"
+  onsubmit="return confirm('¿Estás seguro que deseas eliminar este usuario? Esta acción es irreversible');">
   {% csrf_token %}
   <input type="submit" class="btn btn-primary" value="ELIMINAR" />
 </form>
