@@ -43,7 +43,7 @@
       <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <input type="text" name="{{ field.name }}" id="{{ field.id }}" placeholder="{{ field.label }}"
-          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}"{% endif %} />
+          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
       </div>
 
       {% if field.errors %}
@@ -53,66 +53,16 @@
 
     {% endfor %}
 
-    <!--
-    {# First name #}
-    <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">NOMBRES</div>
-      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <input type="text" name="first_name" id="id_first_name" placeholder="Nombres"
-          class="form-control  font-roboto" {% if form.first_name.value %}value="{{ form.first_name.value }}"
-          {% endif %} />
-      </div>
-
-      {% if form.first_name.errors %}
-      <div class="message error w-full leading-3 text-sm">{{ form.first_name.errors|first }}</div>
-      {% endif %}
-    </div>
-
-    {# Last name #}
-    <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">APELLIDOS</div>
-      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <input type="text" name="last_name" id="id_last_name" placeholder="Apellidos"
-          class="form-control input-text font-roboto" {% if form.last_name.value %}value="{{ form.last_name.value }}"
-          {% endif %} />
-      </div>
-
-      {% if form.last_name.errors %}
-      <div class="message error w-full leading-3 text-sm">{{ form.last_name.errors|first }}</div>
-      {% endif %}
-    </div>
-    
-
-    {# Email #}
-    <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">CORREO ELECTRÓNICO</div>
-      <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <div class="icon-email"></div>
-        <input type="email" name="email" id="id_email" placeholder="Correo electrónico"
-          class="form-control input-text font-roboto" {% if form.email.value %}value="{{ form.email.value }}"
-          {% endif %} />
-      </div>
-
-      {% if form.email.errors %}
-      <div class="message error w-full leading-3 text-sm">{{ form.email.errors|first }}</div>
-      {% endif %}
-    </div>
-    -->
-
     {# Identification type and number #}
     <div class="flex flex-col gap-2">
       <div class="text-lg leading-4 font-raleway text-slate-800">DOCUMENTO</div>
 
       <div class="flex gap-2">
-        {# Identification type #}
-        {#  While a bit confusing, this code draws a dropdown select #}
-        {#  of the identification types from the 'identification_type' #}
-        {#  field located in the user model. #}
         <select name="identification_type" id="id_identification_type"
           class="px-2 border rounded-md font-roboto bg-white border-slate-800">
           {% for value, text in form.identification_type.field.choices %}
           <option value {% if value %}="{{ value }}" {% endif %}
-            {% if value == form.identification_type.value %}selected{% endif %}>
+            {% if value|to_int == form.identification_type.value|to_int %}selected{% endif %}>
             {{ text }}
           </option>
           {% endfor %}
@@ -131,45 +81,16 @@
       {% endif %}
     </div>
 
-    <!--
-    {# Gender #}
-    <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">GÉNERO</div>
-
-      <select name="gender" id="id_gender" class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
-        {% for value, text in form.gender.field.choices %}
-        <option value {% if value %}="{{ value }}" {% endif %} {% if value == form.gender.value %}selected{% endif %}>
-          {{ text }}
-        </option>
-        {% endfor %}
-      </select>
-    </div>
-
-    {# Site #}
-    <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">SEDE</div>
-      <select name="site" id="id_site" class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
-        {% for value, text in form.site.field.choices %}
-        <option value {% if value %}="{{ value }}" {% endif %} {% if value == form.site.value %}selected{% endif %}>
-          {{ text }}
-        </option>
-        {% endfor %}
-      </select>
-
-      {% if form.site.errors %}
-      <div class="message error w-full leading-3 text-sm">{{ form.site.errors|first }}</div>
-      {% endif %}
-    </div>
-    -->
-
     {# Gender, Site #}
     {% for field in form|get_fields:"gender,site" %}
 
     <div class="flex flex-col gap-2">
-      <div class="text-lg leading-4 font-raleway text-slate-800">{{ field.label }}</div>
-      <select name="site" id="id_site" class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
+      <div class="text-lg uppercase leading-4 font-raleway text-slate-800">{{ field.label }}</div>
+
+      <select name="{{ field.name }}" id="id_{{ field.name }}"
+        class="px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
         {% for value, text in field.field.choices %}
-        <option value {% if value %}="{{ value }}" {% endif %} {% if value == field.value %}selected{% endif %}>
+        <option value {% if value %}="{{ value }}" {% endif %}{% if field.value|to_int == value|to_int %}selected{% endif %}>
           {{ text }}
         </option>
         {% endfor %}

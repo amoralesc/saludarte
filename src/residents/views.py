@@ -35,10 +35,11 @@ class NewResidentView(LoginRequiredMixin, CreateView):
     fields = [
         "first_name",
         "last_name",
-        "email",
         "identification_type",
         "identification_number",
         "gender",
-        "is_staff",
         "site",
+        "date_birth",
+        "date_joined",
+        "eps",
     ]
