@@ -24,8 +24,8 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     """
 
     model = get_user_model()
-    template_name = "accounts/edit_profile_form.html"
-    # An user can't change their staff status and site
+    template_name = "accounts/edit_profile.html"
+    # An user can't change their staff status nor site
     fields = [
         "first_name",
         "last_name",

@@ -68,7 +68,7 @@ class NewUserView(StaffMemberRequiredMixin, CreateView):
     """
 
     model = get_user_model()
-    template_name = "users/new_user_form.html"
+    template_name = "users/new_user.html"
     # The password is not included because it is left blank when a new
     # user is created. The welcome email has a link to reset the password.
     fields = [
@@ -121,7 +121,7 @@ class EditUserView(StaffMemberRequiredMixin, UpdateView):
     """
 
     model = get_user_model()
-    template_name = "users/edit_user_form.html"
+    template_name = "users/edit_user.html"
     fields = [
         "first_name",
         "last_name",

@@ -75,7 +75,7 @@ class NewResidentView(LoginRequiredMixin, CreateView):
     """
 
     model = Resident
-    template_name = "residents/new_resident_form.html"
+    template_name = "residents/new_resident.html"
     fields = [
         "first_name",
         "last_name",
