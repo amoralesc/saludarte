@@ -1,13 +1,32 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.http import HttpResponseNotAllowed, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from .models import Resident
+
+
+class OnlyAccessMySiteResidentsMixin(UserPassesTestMixin):
+    """
+    Verifies that the current user shares the same
+    site as the resident.
+    """
+
+    login_url = reverse_lazy("login")
+
+    def test_func(self):
+        # If the user's site is Global (1) then it can access
+        # all the residents.
+        if self.request.user.site.id == 1:
+            return True
+
+        # Otherwise, match the user's site to the resident's site.
+        resident = get_object_or_404(Resident, pk=self.kwargs["pk"])
+        return self.request.user.site.id == resident.site.id
 
 
 class ResidentsIndexView(LoginRequiredMixin, ListView):
@@ -20,9 +39,34 @@ class ResidentsIndexView(LoginRequiredMixin, ListView):
     - Delete an existing resident
     """
 
-    model = Resident
     context_object_name = "residents"
     template_name = "residents/index.html"
+
+    def get_queryset(self):
+        """
+        Returns all the residents in the database that match
+        the user's site. If the user's site is Global (1)
+        then it returns all the residents in the database.
+        """
+
+        if self.request.user.site.id == 1:
+            return Resident.objects.all()
+
+        return Resident.objects.filter(site=self.request.user.site)
+
+
+class DetailResidentView(
+    LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, DetailView
+):
+    """
+    It shows the details of a specific resident.
+    Offers actions to edit the resident:
+    - Edit the resident's information
+    - Delete the resident
+    """
+
+    model = Resident
+    template_name = "users/detail_user.html"
 
 
 class NewResidentView(LoginRequiredMixin, CreateView):
@@ -51,17 +95,17 @@ class NewResidentView(LoginRequiredMixin, CreateView):
         return reverse_lazy("residents:index")
 
 
-def delete_resident(request, resident_id):
+class DeleteResidentView(
+    LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, DeleteView
+):
     """
     Deletes a resident given its id.
     """
 
-    if request.method == "POST" or request.method == "DELETE":
-        resident = get_object_or_404(Resident, pk=resident_id)
-        resident.delete()
+    model = Resident
+
+    def get_success_url(self):
         messages.success(
-            request, "El residente ha sido eliminado exitosamente."
+            self.request, "El residente ha sido eliminado exitosamente."
         )
-        return HttpResponseRedirect(reverse_lazy("residents:index"))
-    else:
-        return HttpResponseNotAllowed(["post", "delete"])
+        return reverse_lazy("residents:index")

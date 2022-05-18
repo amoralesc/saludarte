@@ -7,8 +7,14 @@ app_name = "residents"
 urlpatterns = [
     # name: residents:index, path: /residentes/
     path("", views.ResidentsIndexView.as_view(), name="index"),
+    # name: users:detail, path: /residentes/<pk>/,
+    path("<int:pk>/", views.DetailResidentView.as_view(), name="detail"),
     # name: residents:new, path: /residentes/nuevo/
     path("nuevo/", views.NewResidentView.as_view(), name="new"),
-    # name: residents:delete, path: /residentes/<resident_id>/eliminar/
-    path("<int:resident_id>/eliminar/", views.delete_resident, name="delete"),
+    # name: residents:delete, path: /residentes/<pk>/eliminar/
+    path(
+        "<int:pk>/eliminar/",
+        views.DeleteResidentView.as_view(),
+        name="delete",
+    ),
 ]
