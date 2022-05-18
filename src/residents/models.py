@@ -78,7 +78,8 @@ class Relative(Person):
     kinship = models.SmallIntegerField(
         "parentesco",
         choices=KINSHIP_CHOICES,
-        default=OTHER,
+        null=False,
+        blank=False,
     )
 
     email = models.EmailField(

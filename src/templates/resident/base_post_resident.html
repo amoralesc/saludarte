@@ -88,7 +88,7 @@
       <div class="text-lg uppercase leading-4 font-raleway text-slate-800">{{ field.label }}</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
         <input type="date" name="{{ field.name }}" id="{{ field.id }}" placeholder="{{ field.label }}"
-          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
+          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value|date:"m-d-Y" }}" {% endif %} />
       </div>
 
       {% if field.errors %}
@@ -103,8 +103,8 @@
     <div class="flex flex-col gap-2">
       <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <input type="text" name="{{ field.name }}" id="{{ field.id }}" placeholder="{{ field.label }}"
-          class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
+        <input type="text" name="{{ field.name }}" id="{{ field.id }}" class="form-control input-text font-roboto"
+          {% if field.value %}value="{{ field.value }}" {% endif %} />
       </div>
 
       {% if field.errors %}

@@ -1,0 +1,278 @@
+{% extends "layouts/base_authenticated.html" %}
+{% load static %}
+{% load tz %}
+
+{% block title %}Ver residente{% endblock %}
+
+{% block body %}
+
+{# This template is paginated #}
+{# First page: resident's basic information #}
+{# Second page: resident's relatives #}
+{# Third page: resident's medical information #}
+
+{# The flex propierties mean #}
+{# When the screen is xl or above, position the navigation to the left and the page information to the center of parent #}
+{# When the screen is below xl, position the items using flex to the start of the page, and wrap them when needed #}
+<div class="mx-4 flex flex-wrap justify-start xl:justify-around xl:relative items-start gap-4">
+
+  {# Navigation #}
+  <div class="xl:absolute xl:left-0 flex flex-col max-w-fit items-start py-4 px-6 border-2 rounded-md border-slate-800">
+    <h1 class="text-2xl text-left font-raleway font-medium text-slate-800">
+      Residente
+    </h1>
+    <ul class="mt-1 list-decimal" type="1">
+      <li class="list-inside font-raleway nav-item text-slate-800 {% if page_obj.number == 1 %}active{% endif %}">
+        <a href="?page=1">
+          INFORMACIÓN DEL RESIDENTE
+        </a>
+      </li>
+      <li class="list-inside font-raleway nav-item text-slate-800 {% if page_obj.number == 2 %}active{% endif %}">
+        <a href="?page=2">
+          FAMILIARES DEL RESIDENTE
+        </a>
+      </li>
+      <li class="list-inside font-raleway nav-item text-slate-800 {% if page_obj.number == 3 %}active{% endif %}">
+        <a href="?page=3">
+          PRESCRIPCIÓN DEL RESIDENTE
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  {# First page: resident's basic information #}
+  {% if page_obj.number == 1 %}
+  {% with resident=page_obj|first %}
+
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap justify-center gap-8 px-8 py-6 border-2 rounded-md border-slate-800">
+
+      {# Left side: resident's picture #}
+      <div class="flex flex-col items-stretch gap-3">
+
+        {# Picture TODO: FIX THIS #}
+        <div class="flex flex-col items-center gap-2">
+          <div class="text-center leading-4 text-lg font-raleway text-slate-800">FOTO DEL RESIDENTE</div>
+          <img class="rounded-full h-40 w-40" src="{% static 'images/ic-account-circle-dark.svg' %}"
+            alt="Resident's picture" />
+        </div>
+
+      </div>
+
+      {# Right side: resident's information #}
+      <div class="flex flex-col items-start gap-3">
+
+        {# Name #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">NOMBRE</div>
+          <div class="text-xl font-light font-roboto">{{ resident.get_full_name }}</div>
+        </div>
+
+        {# Identification number #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">DOCUMENTO</div>
+          <div class="text-xl font-light font-roboto">{{ resident.get_formatted_identification }}</div>
+        </div>
+
+        {# Gender #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">GÉNERO</div>
+          <div class="text-xl font-light font-roboto">{{ resident.get_gender_display }}</div>
+        </div>
+
+        {# Site #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">SEDE</div>
+          <div class="text-xl font-light font-roboto">{{ resident.site.name }}</div>
+        </div>
+
+        {# EPS #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">EPS</div>
+          <div class="text-xl font-light font-roboto">{{ resident.eps }}</div>
+        </div>
+
+        {# Birthdate #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">FECHA DE NACIMIENTO</div>
+          <div class="text-xl font-light font-roboto">
+            {% timezone "America/Bogota" %}
+            {{ resident.date_birth|date:"d/m/Y" }}
+            {% endtimezone %}
+          </div>
+        </div>
+
+        {# Date joined #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">FECHA DE INGRESO</div>
+          <div class="text-xl font-light font-roboto">
+            {% timezone "America/Bogota" %}
+            {{ resident.date_joined|date:"d/m/Y" }}
+            {% endtimezone %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {# Page action buttons #}
+
+    <div class="flex flex-wrap gap-3">
+      <a href="{% url 'residents:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
+      <a href="{% url 'residents:edit' resident.id %}" class="btn btn-primary self-stretch">EDITAR</a>
+
+      <form action="{% url 'residents:delete' resident.id %}" method="post"
+        onsubmit="return confirm('¿Estás seguro que deseas eliminar este residente? Esta acción es irreversible');">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary" value="ELIMINAR" />
+      </form>
+    </div>
+
+  </div>
+
+  {% endwith %}
+
+  {# Second page: resident's relatives #}
+  {% elif page_obj.number == 2 %}
+  {% with relatives=page_obj|first %}
+
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap justify-center gap-8 px-8 py-6 border-2 rounded-md border-slate-800">
+
+      {# Left side: list of relatives #}
+      <div class="flex flex-col items-stretch">
+
+        <h2 class="text-xl text-left font-raleway font-medium text-slate-800">
+          Familiares
+        </h2>
+
+        <ul class="mt-1 list-decimal" type="1">
+          {% for relative in relatives %}
+          <li id="relative_{{ forloop.counter0 }}" class="relative_item list-inside cursor-pointer font-raleway nav-item text-slate-800 
+            {% if forloop.counter == 1 %}active{% endif %}">
+            <span onclick="selectRelative({{ forloop.counter0 }})">
+              Familiar # {{ forloop.counter }} - {{ relative.get_kinship_display }}
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+
+      </div>
+
+
+      {# Right side: relative's information #}
+      {% for relative in relatives %}
+      <div class="flex flex-col items-start gap-3">
+
+        {# Name #}
+        <div class="mt-2 flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">NOMBRE</div>
+          <div class="text-xl font-light font-roboto">{{ relative.get_full_name }}</div>
+        </div>
+
+        {# Identification number #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">DOCUMENTO</div>
+          <div class="text-xl font-light font-roboto">{{ relative.get_formatted_identification }}</div>
+        </div>
+
+        {# Gender #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">GÉNERO</div>
+          <div class="text-xl font-light font-roboto">{{ relative.get_gender_display }}</div>
+        </div>
+
+        {# Site #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">PARENTESCO</div>
+          <div class="text-xl font-light font-roboto">{{ relative.get_kinship_display }}</div>
+        </div>
+
+        {# Email #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">CORREO ELECTRÓNICO</div>
+          <div class="text-xl font-light font-roboto">{{ relative.email }}</div>
+        </div>
+
+        {# Contact number #}
+        <div class="flex flex-col">
+          <div class="text-lg leading-4 font-raleway text-slate-800">TELÉFONO CELULAR</div>
+          <div class="text-xl font-light font-roboto">{{ relative.contact_number }}</div>
+        </div>
+
+        {# Email alerts #}
+        <div class="flex items-center">
+          {% if relative.email_alerts %}
+          <img src="{% static 'images/ic-checked-square.svg' %}" />
+          {% else %}
+          <img src="{% static 'images/ic-square.svg' %}" />
+          {% endif %}
+          <span class="ml-2 text-lg leading-4 font-raleway text-slate-800">ALERTAS POR CORREO ELECTRÓNICO</span>
+        </div>
+
+        {# WhatsApp alerts #}
+        <div class="flex items-center">
+          {% if relative.whatsapp_alerts %}
+          <img src="{% static 'images/ic-checked-square.svg' %}" />
+          {% else %}
+          <img src="{% static 'images/ic-square.svg' %}" />
+          {% endif %}
+          <span class="ml-2 text-lg leading-4 font-raleway text-slate-800">ALERTAS POR WHATSAPP</span>
+        </div>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+    {# Page action buttons #}
+    <div class="flex flex-wrap gap-3">
+      <a href="{% url 'residents:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
+      <!--
+      <a href="" class="btn btn-primary self-stretch">EDITAR</a>
+
+      <form action="" method="post"
+        onsubmit="return confirm('¿Estás seguro que deseas eliminar este residente? Esta acción es irreversible');">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary" value="ELIMINAR" />
+      </form>
+      -->
+    </div>
+
+  </div>
+
+  {% endwith %}
+  {# Third page: resident's medical information #}
+  {% else %}
+
+
+
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+  function selectRelative(relative_number) {
+    console.log(relative_number);
+
+    const selected_item = document.getElementById("relative_" + relative_number);
+
+    // Add active to the selected item
+    if (!selected_item.classList.contains("active")) {
+      selected_item.classList.add("active");
+    }
+
+    // Remove active from all other items
+    const items = document.getElementsByClassName("relative_item");
+    console.log(items);
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].classList.contains("active") && i != relative_number) {
+        items[i].classList.remove("active");
+      }
+    }
+  }
+</script>
+{% endblock %}

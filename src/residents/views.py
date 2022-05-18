@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 
 from django.views.generic import (
     ListView,
-    DetailView,
     CreateView,
     UpdateView,
     DeleteView,
@@ -61,17 +60,32 @@ class ResidentsIndexView(LoginRequiredMixin, ListView):
 
 
 class DetailResidentView(
-    LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, DetailView
+    LoginRequiredMixin,
+    OnlyAccessMySiteResidentsMixin,
+    ListView,
 ):
     """
-    It shows the details of a specific resident.
+    It shows the details of a specific resident in a paginated view.
+    - First page: resident's basic information
+    - Second page: resident's relatives
+    - Third page: resident's medical information
+
     Offers actions to edit the resident:
-    - Edit the resident's information
+    - Edit the resident's information (relatives and inventory too)
     - Delete the resident
     """
 
-    model = Resident
+    paginate_by = 1
     template_name = "residents/detail_resident.html"
+
+    def get_queryset(self):
+        resident = get_object_or_404(Resident, pk=self.kwargs["pk"])
+
+        return [
+            resident,
+            resident.relative_set.all().order_by("kinship"),
+            resident,
+        ]
 
 
 class NewResidentView(LoginRequiredMixin, CreateView):
@@ -100,7 +114,9 @@ class NewResidentView(LoginRequiredMixin, CreateView):
         return reverse_lazy("residents:index")
 
 
-class EditResidentView(LoginRequiredMixin, UpdateView):
+class EditResidentView(
+    LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, UpdateView
+):
     """
     It shows a form to edit an existing resident.
     """

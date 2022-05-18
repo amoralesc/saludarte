@@ -18,7 +18,12 @@
   font-family: "Raleway", sans-serif;
 }
 
-/* Navigation bar items */
+/* Custom quick css elements */
+.m-0-auto {
+  margin: 0 auto;
+}
+
+/* Navigation items */
 
 @layer components {
   .nav-item {
