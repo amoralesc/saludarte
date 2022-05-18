@@ -148,21 +148,24 @@
 
         <ul class="mt-1 list-decimal" type="1">
           {% for relative in relatives %}
-          <li id="relative_{{ forloop.counter0 }}" class="relative_item list-inside cursor-pointer font-raleway nav-item text-slate-800 
+          <li id="relative_{{ forloop.counter0 }}" class="relative_item list-inside cursor-pointer uppercase font-raleway nav-item text-slate-800 
             {% if forloop.counter == 1 %}active{% endif %}">
             <span onclick="selectRelative({{ forloop.counter0 }})">
               Familiar # {{ forloop.counter }} - {{ relative.get_kinship_display }}
             </span>
+          </li>
+          {% empty %}
+          <li class="list-none uppercase font-raleway text-slate-800">
+            <span>No hay familiares registrados</span>
           </li>
           {% endfor %}
         </ul>
 
       </div>
 
-
       {# Right side: relative's information #}
       {% for relative in relatives %}
-      <div class="flex flex-col items-start gap-3">
+      <div class="relative_item_info flex flex-col items-start gap-3 {% if forloop.counter != 1 %}hidden{% endif %}">
 
         {# Name #}
         <div class="mt-2 flex flex-col">
@@ -228,20 +231,44 @@
     {# Page action buttons #}
     <div class="flex flex-wrap gap-3">
       <a href="{% url 'residents:index' %}" class="btn btn-primary self-stretch">VOLVER</a>
-      <!--
-      <a href="" class="btn btn-primary self-stretch">EDITAR</a>
+      <a href="{% url 'residents:new_relative' view.kwargs.pk %}" class="btn btn-primary self-stretch">NUEVO</a>
 
-      <form action="" method="post"
-        onsubmit="return confirm('¿Estás seguro que deseas eliminar este residente? Esta acción es irreversible');">
+      {# Edit and delete are relative-specific #}
+
+      {% for relative in relatives %}
+
+      <form action="{% url 'residents:edit_relative' view.kwargs.pk relative.id %}" method="post"
+        class="relative_item_edit {% if forloop.counter != 1 %}hidden{% endif %}">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-primary" value="EDITAR" />
+      </form>
+
+      <form action="{% url 'residents:delete_relative' view.kwargs.pk relative.id %}" method="post"
+        onsubmit="return confirm('¿Estás seguro que deseas eliminar este familiar? Esta acción es irreversible');"
+        class="relative_item_delete {% if forloop.counter != 1 %}hidden{% endif %}">
         {% csrf_token %}
         <input type="submit" class="btn btn-primary" value="ELIMINAR" />
       </form>
-      -->
+
+      {% endfor %}
     </div>
+
+    {# Page messages #}
+    {% if messages %}
+    <div class="flex flex-col gap-3">
+      {% for message in messages %}
+      <div class="message w-full {% if message.tags %}{{ message.tags }}{% endif %}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
 
   </div>
 
   {% endwith %}
+
   {# Third page: resident's medical information #}
   {% else %}
 
@@ -255,22 +282,54 @@
 
 {% block script %}
 <script>
-  function selectRelative(relative_number) {
-    console.log(relative_number);
-
+  function selectRelative(relative_number, relative_id) {
     const selected_item = document.getElementById("relative_" + relative_number);
 
     // Add active to the selected item
     if (!selected_item.classList.contains("active")) {
       selected_item.classList.add("active");
+    } else {
+      return;
     }
 
     // Remove active from all other items
     const items = document.getElementsByClassName("relative_item");
-    console.log(items);
     for (var i = 0; i < items.length; i++) {
       if (items[i].classList.contains("active") && i != relative_number) {
         items[i].classList.remove("active");
+      }
+    }
+
+    // Hide all unselected relative's infos
+    const relative_items = document.getElementsByClassName("relative_item_info");
+
+    for (var i = 0; i < relative_items.length; i++) {
+      if (i == relative_number && relative_items[i].classList.contains("hidden")) {
+        relative_items[i].classList.remove("hidden");
+      } else if (!relative_items[i].classList.contains("hidden")) {
+        relative_items[i].classList.add("hidden");
+      }
+    }
+
+    // Hide all unselected relative's edit buttons
+    const relative_items_edit = document.getElementsByClassName("relative_item_edit");
+
+    for (var i = 0; i < relative_items_edit.length; i++) {
+      if (i == relative_number && relative_items_edit[i].classList.contains("hidden")) {
+        relative_items_edit[i].classList.remove("hidden");
+      } else if (!relative_items_edit[i].classList.contains("hidden")) {
+        relative_items_edit[i].classList.add("hidden");
+      }
+    }
+
+    // Hide all unselected relative's delete buttons
+    const relative_delete_buttons = document.getElementsByClassName("relative_item_delete");
+
+    for (var i = 0; i < relative_delete_buttons.length; i++) {
+      if (i == relative_number && relative_delete_buttons[i].classList.contains("hidden")) {
+        relative_delete_buttons[i].classList.remove("hidden");
+      } else if (!relative_delete_buttons[i].classList.contains("hidden")) {
+        relative_delete_buttons[i].classList.add("hidden");
       }
     }
   }

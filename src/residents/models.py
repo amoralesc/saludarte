@@ -115,3 +115,9 @@ class Relative(Person):
     class Meta:
         verbose_name = "Familiar"
         verbose_name_plural = "Familiares"
+
+    def get_absolute_url(self):
+        return (
+            reverse_lazy("residents:detail", kwargs={"pk": self.resident.pk})
+            + "?page=2"
+        )
