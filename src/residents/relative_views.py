@@ -74,6 +74,13 @@ class EditRelativeView(
     def get_object(self):
         return Relative.objects.get(pk=self.kwargs["relative_pk"])
 
+    def get_success_url(self):
+        url = super(UpdateView, self).get_success_url()
+        messages.success(
+            self.request, "El familiar ha sido editado exitosamente."
+        )
+        return url
+
 
 class DeleteRelativeView(
     LoginRequiredMixin, OnlyAccessMySiteResidentsMixin, DeleteView

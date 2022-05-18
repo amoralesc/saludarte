@@ -80,7 +80,7 @@
     </div>
 
     {% endfor %}
-  
+
     {# Email, Contact number #}
     {% for field in form|get_fields:"email,contact_number" %}
 
@@ -95,6 +95,17 @@
       <div class="message error w-full leading-3 text-sm">{{ field.errors|first }}</div>
       {% endif %}
     </div>
+    {% endfor %}
+
+    {# Email alerts, WhatsApp alerts #}
+    {% for field in form|get_fields:"email_alerts,whatsapp_alerts" %}
+
+    <div class="flex gap-2">
+      <input type="checkbox" name="{{ field.name }}" id="{{ field.id }}" {% if field.value %}checked{% endif %}
+        class="w-4 h-4 form-checkbox" />
+      <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
+    </div>
+
     {% endfor %}
 
     {# Action buttons #}
