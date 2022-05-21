@@ -21,7 +21,7 @@
     <div class="flex flex-col gap-2">
       <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <input type="text" name="{{ field.name }}" id="id_{{ field.name }}" placeholder="{{ field.label }}"
+        <input type="text" name="{{ field.html_name }}" id="{{ field.auto_id }}" placeholder="{{ field.label }}"
           class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
       </div>
 
@@ -35,7 +35,7 @@
     <div class="flex flex-col gap-2">
       <div class="text-lg uppercase leading-4 font-raleway  text-slate-800">{{ field.label }}</div>
       <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-        <textarea name="{{ field.name }}" id="id_{{ field.name }}" placeholder="{{ field.label }}" maxlength="512"
+        <textarea name="{{ field.html_name }}" id="{{ field.auto_id }}" placeholder="{{ field.label }}" maxlength="512"
           class="form-control input-text font-roboto">{% if field.value %}{{ field.value }}{% endif %}</textarea>
       </div>
 
@@ -46,26 +46,45 @@
     {% endwith %}
 
     {# Presentation formset #}
-    {{ formset.management_form }}
+    {{ presentation_formset.management_form }}
 
-    <table class="table border-separate -mx-3" style="border-spacing: 12px 0;">
+    {# Add more presentations #}
+    <div class="flex flex-col items-start gap-2">
+      <span class="text-lg uppercase leading-4 font-raleway text-slate-800">PRESENTACIONES</span>
+      <span id="add_presentation" class="btn btn-primary py-1">AÑADIR PRESENTACIÓN</span>
+    </div>
+
+    {# Magic margin assigment: set border-spacing to separate cells, #}
+    {# and set outer margin to negate the effect on the outer borders #}
+    <table class="table border-separate -mx-2 -my-1" style="border-spacing: 8px 4px;">
       <thead>
-        <tr class="text-left text-lg font-raleway text-slate-800">
+        <tr class="text-left text-base font-raleway text-slate-800">
           <th><span style="font-weight:normal;">PRESENTACIÓN</span></th>
-          <th><span style="font-weight:normal;">UNIDAD DE MEDIDA</span>
-          </th>
+          <th><span style="font-weight:normal;">UNIDAD DE MEDIDA</span></th>
           <th><span style="font-weight:normal;">MEDIDA</span></th>
+          <th><span style="font-weight:normal;">ELIMINAR</span></th>
         </tr>
       </thead>
+
+      {% comment %}
+      The actual forms that come inside the formset are rendered here.
+      Thanks to the add more presentations action (included in app.js),
+      the formset will be able to add more presentations by cloning
+      the last 'form_container' id, and changing the names and ids
+      of the input tags.
+
+      For some reason, if the form is cloned, the if form.errors is
+      also cloned and works, but the function should only be cloning
+      the HTML inside the tr tag marked with the last id 'forms_container',
+      so TBH, I'm not sure why it works. But its not a bug, it's a feature.
+      {% endcomment %}
       <tbody>
         {% for form in presentation_formset %}
-
-        {% with cur_form=forloop.counter0 %}
-        <tr>
+        <tr id="forms_container">
+          {# Type and measure unit #}
           {% for field in form|get_fields:"type,measure_unit" %}
           <td>
-            
-            <select name="form-{{ cur_form }}-{{ field.name }}" id="id_form-{{ cur_form }}-{{ field.name }}"
+            <select name="{{ field.html_name }}" id="{{ field.auto_id }}"
               class="w-full px-2 py-3 border rounded-md font-roboto bg-white border-slate-800">
               {% for value, text in field.field.choices %}
               <option value {% if value %}="{{ value }}" {% endif %}
@@ -77,16 +96,32 @@
           </td>
           {% endfor %}
 
+          {# Measure value #}
+          {% with field=form|get_fields:"measure"|first %}
           <td>
-            {% with field=form|get_fields:"measure"|first %}
             <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-              <input type="text" name="form-{{ cur_form }}-{{ field.name }}" id="id_form-{{ cur_form }}-{{ field.name }}" placeholder="{{ field.label }}"
-                class="form-control input-text font-roboto" {% if field.value %}value="{{ field.value }}" {% endif %} />
+              <input type="number" name="{{ field.html_name }}" id="{{ field.auto_id }}" placeholder="{{ field.label }}"
+                class="form-control input-text font-roboto" style="width: 100px;"
+                {% if field.value %}value="{{ field.value }}" {% endif %} />
             </div>
-            {% endwith %}
+          </td>
+          {% endwith %}
+
+          {# Delete form checkbox #}
+          <td class="text-center">
+            <input type="checkbox" name="{{ form.DELETE.html_name }}" id="{{ form.DELETE.auto_id }}" class="w-6 h-6"
+              {% if form.DELETE.value %}value="{{ form.DELETE.value }}" {% endif %}>
           </td>
         </tr>
-        {% endwith %}
+
+        {% if form.errors %}
+        <tr>
+          <td colspan="3">
+            <div class="message error w-full leading-3 text-sm">Debe llenar todos los campos</div>
+          </td>
+        </tr>
+        {% endif %}
+
         {% endfor %}
 
       </tbody>
@@ -98,7 +133,6 @@
       <a href="{% url 'medications:index' %}" class="btn btn-primary">CANCELAR</a>
     </div>
   </form>
-
 
 </div>
 

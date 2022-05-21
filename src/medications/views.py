@@ -50,10 +50,14 @@ def create_medication(request):
 
         if medication_form.is_valid() and presentation_formset.is_valid():
             medication = medication_form.save()
+            # Get the presentations' models from the formset
+            # but delete those marked for deletion
+            presentations = presentation_formset.save(commit=False)
 
-            for presentation_form in presentation_formset:
-                presentation_form.instance.medication = medication
-                presentation_form.save()
+            # Set the medication to the presentations
+            for presentation in presentations:
+                presentation.medication = medication
+                presentation.save()
 
             messages.success(
                 request, "The medication has been created successfully."

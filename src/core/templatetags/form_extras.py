@@ -16,7 +16,6 @@ def get_fields(form, field_names):
     for field in form:
         if field.name in field_names:
             fields.append(field)
-
     return fields
 
 
