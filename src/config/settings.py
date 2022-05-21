@@ -76,7 +76,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Custom user model
 AUTH_USER_MODEL = "accounts.User"
 
+# After logging in, redirect to the home page
 LOGIN_REDIRECT_URL = "/"
+# After logging out, redirect to the login page
 LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 # Database

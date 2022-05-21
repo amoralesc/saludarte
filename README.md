@@ -33,9 +33,10 @@ código fuente.
   - [Django](#django)
     - [Estructura de carpetas](#estructura-de-carpetas)
     - [Configuración de Django](#configuración-de-django)
-    - [Aplicaciones](#aplicaciones)
-  - [Front-end](#front-end-1)
-  - [Back-end](#back-end-1)
+    - [Arquitectura de Django](#arquitectura-de-django)
+    - [Aplicaciones de Django](#aplicaciones-de-django)
+    - [Aplicaciones del proyecto](#aplicaciones-del-proyecto)
+    - [Modelos del proyecto](#modelos-del-proyecto)
 - [Licencia](#licencia)
 - [Atribuciones](#atribuciones)
 
@@ -185,15 +186,7 @@ La estructura de carpetas del proyecto luce algo así:
 ├── public/
 ├── public_collected/
 ├── src/
-│   ├── accounts/
-│   ├── config/
-│   ├── core/
-│   ├── medications/
-│   ├── pages/
-│   ├── residents/
-│   ├── templates/
-│   ├── up/
-│   ├── users/
+│   ...
 │   ├── __init__.py
 │   └── manage.py
 ├── .env.example
@@ -567,6 +560,11 @@ comandos.
 A continuación se utilizarán varios de los términos de Django. Se aconseja haber
 realizado el tutorial de Django para entender mejor los conceptos.
 
+**Nota:** suele ser confuso hablar de aplicaciones Django, ya que es un término
+utilizado para representar un paquete del proyecto, con modelos, vistas,
+templates, etc. Cuando hablemos de _aplicaciones_ en el contexto de Django, nos
+estaremos refiriendo a este término.
+
 ### Estructura de carpetas
 
 Todo el código fuente de la aplicación se encuentra alojado en la carpeta
@@ -674,11 +672,379 @@ Este es un archivo en constante modificación.
 Archivo que contiene todas las configuraciones globales de Django. Este un
 archivo en constante modificación.
 
-### Aplicaciones
+Los cambios más comunes en este archivo ocurren cuando:
 
-## Front-end
+- Se crea una nueva aplicación Django. En este caso, se procede a registrar la
+  aplicación en el setting **INSTALLED_APPS**. Recuerda que este setting tiene
+  una jerarquía que debe ser respetada. Usualmente, cada nueva aplicación que
+  crees va por debajo de una ya existente, pero encima de las aplicaciones de
+  django (_django.contrib..._).
+
+### Arquitectura de Django
+
+Django utiliza una arquitectura llamada _MVT_ (Model View Template).
+
+- **Model:** representa las entidades y estructuras de datos de la aplicación.
+  Se comunica con la base de datos mediante una interfaz dispuesta por Django.
+- **View:** es el controlador de vistas, que recibe las peticiones, las
+  interpreta y las responde.
+- **Template:** es el motor de plantillas, que permite renderizar una vista en
+  mediante una plantilla HTML. Django utilizada su propio lenguaje HTML con
+  múltiples extensiones que le permiten crear plantillas más complejas,
+  compuestas de datos traídos por los modelos.
+
+<figure>
+  <img src=".github/docs/images/django_mvt.png">
+  <figcaption align="left">
+    <div style="display: inline-flex; align-items: center; gap: 6px;">
+      <span><a href="https://twitter.com/espifreelancer">Django patrón MVT</a></span>
+      <img src="https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png">
+    </div>
+  </figcaption>
+</figure>
+
+Siguiente el patrón MVT, el cliente envía una petición que es interpretada por
+el mapper URL (`urls.py` ubicado en las configuraciones). Cuando se encuentra la
+vista relacionada con la petición (`views.py` de cada aplicación), se envía la
+petición a esta para que la interprete. Si la vista necesita algún dato, se
+obitene mediante el modelo asociado (`models.py` de cada aplicación).
+Seguidamente, la vista renderiza la plantilla con los datos obtenidos
+(`templates/` de cada aplicación), y esta es envíada junto con la respuesta para
+que el navegador la muestre.
+
+### Aplicaciones de Django
+
+Una aplicación de Django es un módulo autocontenido que contiene modelos,
+vistas, templates, etc., de un tema relacionado.
+
+Así luce la aplicación de _accounts_ del proyecto:
+
+```
+├── src/
+│   ├── accounts/
+│   │   ├── migrations/
+│   │   ├── templates/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ...
+...
+```
+
+#### migrations
+
+Es un directorio automáticamente generado por Django, donde se guardan el
+historial de migraciones a la base de datos realizadas.
+
+#### templates
+
+Es el directorio que contiene las plantillas Django-HTML utilizadas para
+renderizar el contenido de las vistas, junto con los datos de los modelos, al
+usuario en el navegador.
+
+#### admin.py
+
+En este archivo se registran los modelos de la aplicación para la vista de
+administración de Django. Usualmente, mediante pocas líneas de código, es
+posible registrar todos los modelos para que queden disponibles.
+
+```python
+from django.contrib import admin
+from models import Model #, Model2, Model3, etc.
+
+admin.site.register(Model)
+```
+
+#### apps.py
+
+Este archivo se genera automáticamente al crear una nueva aplicación Django. La
+configuración básica define el tipo de campo a utilizar para definir las primary
+keys de los modelos, así como el prefijo de las tablas en la base de datos.
+
+A la hora de registrar una nueva aplicación en **INSTALLED_APPS**, este es el
+módulo utilizado.
+
+```python
+# src/config/settings.py
+
+# [...]
+INSTALLED_APPS = [
+  "accounts.apps.AccountsConfig",
+  # [...]
+]
+```
+
+#### models.py
+
+Aquí se definen los modelos de la aplicación. Un modelo es una clase que hereda
+de `django.db.models.Model`, y representa una entidad de la aplicación (que
+también pasa a ser una tabla en la base de datos).
+
+Pueden existir modelos abstractos, que no se registran en la base de datos, y de
+los cuales otros modelos heredan. Para este proyecto, se da el caso con
+`residents.models.Person`.
+
+#### urls.py
+
+En este archivo se definen las urls de la aplicación. Una url debe estar
+asociada a una vista, tener un nombre, y puede pasar parámetros en la url a la
+vista. Dentro de una misma aplicación, todas las urls comparten un mismo
+_app_name_. Así pues, es posible referenciar a una url desde otra aplicación,
+conociendo el nombre de la app y el nombre de la url.
+
+Por ejemplo:
+
+```python
+# src/accounts/urls.py
+
+# import [...]
+app_name = 'accounts'
+urlpatterns = [
+    # name: accounts:profile, path: /cuenta/perfil/
+    path("perfil/", views.ProfileView.as_view(), name="profile"),
+    # [...]
+]
+```
+
+```python
+# src/users/views.py
+
+# import [...]
+redirect_url = reverse_lazy('accounts:profile')
+```
+
+**Nota:** La aplicación debe definir sus urls en el archivo root de urls
+(`src/config/urls.py`).
+
+```python
+# src/config/urls.py
+
+# import [...]
+url_patterns = [
+  path("cuenta/", include("accounts.urls")),
+  # [...]
+]
+```
+
+#### views.py
+
+Aquí se definen las vistas de la aplicación. Una vista es una clase o una
+función que implementa métodos para responder a una petición (GET, POST), y
+representa un controlador de vistas.
+
+Por lo general, las vistas definidas en este proyecto heredan de vistas
+genéricas de Django, que incluyen muchas funcionalidades por defecto.
+
+Por ejemplo:
+
+```python
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+from .models import Model
+
+# En una aplicación CRUD, podemos tener...
+
+class IndexView(ListView):
+  """READ: Mostar un listado de elementos"""
+  model = Model
+  template_name = 'model/index.html'
+
+class CreateModelView(CreateView):
+  """CREATE: Crear un elemento"""
+  model = Model
+  template_name = 'model/create.html'
+  # fields le dice a Django que campos debe mostrar en el formulario
+  # de creación del modelo
+  fields = ['field1', 'field2', 'field3']
+
+class UpdateModelView(UpdateView):
+  """UPDATE: Actualizar un elemento"""
+  model = Model
+  template_name = 'model/update.html'
+  # fields le dice a Django que campos debe mostrar en el formulario
+  # de actualización del modelo
+  fields = ['field1', 'field2', 'field3']
+
+class DeleteModelView(DeleteView):
+  """DELETE: Eliminar un elemento"""
+  model = Model
+  template_name = 'model/delete.html'
+  success_url = reverse_lazy('model:index')
+```
+
+### Aplicaciones del proyecto
+
+El proyecto define las siguientes aplicaciones:
+
+```
+├── src/
+│   ├── accounts/
+│   ├── core/
+│   ├── medications/
+│   ├── pages/
+│   ├── residents/
+│   ├── up/
+│   ├── users/
+│   ...
+...
+```
+
+#### core
+
+Esta aplicación realmente no tiene funcionalidades específicas. En verdad,
+define generalidades para que el resto de aplicaciones puedan usar. Esta
+aplicación se puede utilizar para:
+
+- Definir modelos abstractos en `src/core/models.py`
+- Definir vistas abstractas o mixins comunes en `src/core/views.py`
+- Definir
+  [template tags y filters](https://docs.djangoproject.com/en/4.0/howto/custom-template-tags/)
+  en `src/core/templatetags/`
+
+#### up
+
+Esta aplicación solo contiene dos vistas que permiten verificar el estado
+(_healthcheck_) del servidor. No hay necesidad de cambiar nada aquí.
+
+#### pages
+
+Esta aplicación contiene una única vista que actúa como el **home** de la
+aplicación web. El path de la url es `/`. No hay necesidad de incluir más vistas
+aquí. Tampoco debería tener objetos para otras apps. En caso de necesitar
+modelos o vistas para toda la aplicación, se pueden ubicar en _core_.
+
+#### accounts
+
+Esta aplicación contiene todo lo relacionado con la autenticación de usuarios.
+Define los modelos que reflejan los usuarios (_User_) y las vistas que permiten
+el login, el logout, el cambio / recuperación de contraseña, visualización y
+edición de perfil.
+
+Esta aplicación **no** se encarga del registro de usuarios, ya que este acceso
+está restringido a usuarios administradores desde la aplicación _users_.
+
+#### users
+
+Esta aplicación define el CRUD para el manejo de usuarios. Permite la
+visualización en en lista e individidual de usuarios, creación (registro),
+edición y eliminación de los mismos.
+
+Aunque un poco confuso, esta aplicación existe para limitar las funcionalidades
+de los usuarios. Solo usuarios administradores (_is_staff_) o superusuarios
+(_is_superuser_) pueden crear, editar o eliminar usuarios.
+
+#### residents
+
+Esta aplicación define el CRUD para el manejo de residentes. Permite la
+visualización en en lista e individidual de residentes, creación, edición y
+eliminación de los mismos.
+
+También define el CRUD para:
+
+- el manejo de los familiares de los residentes.
+- el manejo de las prescripciones de los residentes.
+
+#### medications
+
+Esta aplicación define el CRUD para el manejo de medicamentos. Permite la
+visualización en en lista, creación, edición y eliminación de los mismos.
+
+También define el CRUD para:
+
+- el manejo de las presentaciones de los medicamentos.
+
+### Modelos del proyecto
+
+Los modelos del proyecto pueden ser representados mediante el siguiente diagrama
+entidad-relación, el cual modela como resulta la base de datos después de
+realizar las migraciones.
+
+<img src=".github/docs/images/erd.png">
+
+- **Site:** es la entidad que modela las distintas sedes de la organización.
+  Existe una sede por defecto, llamada _Global_, que engloba las otras sedes.
+  Las sedes tienen:
+
+  - Nombre y dirección (**name** y **address**)
+
+- **Person:** (_no es una entidad, es un modelo abstracto_) es un modelo
+  abstracto que define los campos comunes a todos los tipos de personas. Estos
+  son:
+
+  - **first_name:** Nombres
+  - **last_name:** Apellidos
+  - **identification_type:** Tipo de identificación (CC, CE, TI, PAS, NUIP)
+  - **identification_number:** Número de identificación
+  - **gender:** Género
+
+- **User:** es la entidad que modela el usuario de la aplicación. Los usuarios
+  tienen:
+
+  - Datos de autenticación (**email** y **password**)
+  - Datos de identificación básicos (heredados de `core.models.Person`)
+  - Datos relacionados a permisos de acceso (**is_active**, **is_staff**,
+    **is_superuser**).
+  - Datos sobre la cuenta (**date_joined**, **last_login**)
+  - Pertenecen a una sede (**site FK**).
+
+- **Resident:** es la entidad que modela un residente. Los residentes tienen:
+
+  - Datos de identificación básicos (heredados de `core.models.Person`)
+  - Otros datos demográficos (**date_birth**, **date_joined**, **eps**)
+  - Pertenecen a una sede (**site FK**).
+
+- **Relative:** es la entidad que modela el familiar de un residente. Los
+  familiares tienen:
+
+  - Datos de identificación básicos (heredados de `core.models.Person`)
+  - Tipo de relación con el residente (**kinship**)
+  - Datos de contacto (**email**, **contact_number**)
+  - Datos sobre el sistema de alertas (**email_alerts**, **whatsapp_alerts**)
+  - Pertenecen a un residente (**resident FK**).
+
+- **Medication:** es la entidad que modela un medicamento. Los medicamentos
+  tienen:
+
+  - Nombre y descripción (**name** y **description**)
+
+- **Presentation:** es la entidad que modela una presentación de un medicamento.
+  Las presentaciones tienen:
+
+  - Tipo de presentación (**type**): PASTILLAS, GOTAS, etc.
+  - Unidad de medida (**measure_unit**): mg, mg/ml, %.
+  - Medida (**measure**)
+
+- **Prescription:** es la entidad que modela una prescripción de un residente.
+  Las prescripciones tienen:
+
+  - Dosis (**dosage**)
+  - Unidad de frecuencia (**frequency_unit**): HORAS, DIAS, SEMANAS, MESES.
+  - Frecuencia (**frequency**)
+  - Presentación (**presentation FK**)
+  - Pertenecen a un residente (**resident FK**).
+
+- **MedicationInventory**: es la entidad que modela el inventario de un
+  medicamento de un residente. Los inventarios tienen:
+
+  - Cantidad (**quantity**)
+  - Presentación (**presentation FK**)
+  - Pertenecen a un residente (**resident FK**).
+
+<!--
+### Crear una aplicación
+
+### Crear una vista
+
+### Templates
 
 ## Back-end
+
+## Front-end
+-->
 
 # Licencia
 
@@ -714,22 +1080,20 @@ The MIT License (MIT)
 
 Copyright (c) 2021 Nick Janetakis <nick.janetakis@gmail.com>
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the 'Software'), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
