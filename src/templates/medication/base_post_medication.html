@@ -1,15 +1,13 @@
 {% extends "layouts/base_authenticated.html" %}
 {% load form_extras %}
 
-{% block title %}Crear medicamento{% endblock %}
-
 {% block body %}
 
 <div class="flex flex-col gap-4 mx-auto">
 
   {# Page header #}
   <h1 class="text-4xl text-center self-center font-raleway font-medium text-slate-800">
-    Crear medicamento
+    {% block page_header %}{% endblock %}
   </h1>
 
   {# Form #}
@@ -100,9 +98,9 @@
           {% with field=form|get_fields:"measure"|first %}
           <td>
             <div class="form-group custom-input p-2 border rounded-md border-slate-800">
-              <input type="number" name="{{ field.html_name }}" id="{{ field.auto_id }}" placeholder="{{ field.label }}"
+              <input name="{{ field.html_name }}" id="{{ field.auto_id }}" placeholder="{{ field.label }}"
                 class="form-control input-text font-roboto" style="width: 100px;"
-                {% if field.value %}value="{{ field.value }}" {% endif %} />
+                {% if field.value %}value="{{ field.value }}" {% endif %}>
             </div>
           </td>
           {% endwith %}
@@ -110,7 +108,7 @@
           {# Delete form checkbox #}
           <td class="text-center">
             <input type="checkbox" name="{{ form.DELETE.html_name }}" id="{{ form.DELETE.auto_id }}" class="w-6 h-6"
-              {% if form.DELETE.value %}value="{{ form.DELETE.value }}" {% endif %}>
+              {% if form.DELETE.value == True %}checked{% endif %}>
           </td>
         </tr>
 

@@ -18,7 +18,7 @@
 
   {# Action buttons #}
   <div class="flex gap-3">
-    <a href="{% url 'medications:create' %}" class="btn btn-primary">NUEVO MEDICAMENTO</a>
+    <a href="{% url 'medications:new' %}" class="btn btn-primary">NUEVO MEDICAMENTO</a>
   </div>
 
   {# Medications table, rendered using datatables (js) #}
@@ -50,7 +50,7 @@
         {# Actions #}
         <td>
           <div class="flex flex-wrap items-start gap-2">
-            <a href="" class="btn btn-primary py-1">EDITAR</a>
+            <a href="{% url 'medications:edit' medication.id %}" class="btn btn-primary py-1">EDITAR</a>
 
             <form action="{% url 'medications:delete' medication.id %}" method="post"
               onsubmit="return confirm('¿Estás seguro que deseas eliminar este medicamento? Esta acción es irreversible');">
