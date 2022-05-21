@@ -8,34 +8,92 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Medication',
+            name="Medication",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128, verbose_name='nombre')),
-                ('description', models.TextField(blank=True, max_length=512, null=True, verbose_name='descripción')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=128, verbose_name="nombre"),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True,
+                        max_length=512,
+                        null=True,
+                        verbose_name="descripción",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Medicamento',
-                'verbose_name_plural': 'Medicamentos',
+                "verbose_name": "Medicamento",
+                "verbose_name_plural": "Medicamentos",
             },
         ),
         migrations.CreateModel(
-            name='Presentation',
+            name="Presentation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.SmallIntegerField(choices=[(1, 'Tableta'), (2, 'Cápsula'), (3, 'Pastilla'), (4, 'Gotas'), (5, 'Jarabe'), (6, 'Inyección'), (7, 'Inhalador')], verbose_name='tipo')),
-                ('measure_unit', models.SmallIntegerField(choices=[(1, 'mg'), (3, 'mg/ml'), (4, '%'), (4, 'unidad')], verbose_name='unidad de medida')),
-                ('measure', models.FloatField(verbose_name='medida')),
-                ('medication', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medications.medication', verbose_name='medicamento')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.SmallIntegerField(
+                        choices=[
+                            (1, "Tableta"),
+                            (2, "Cápsula"),
+                            (3, "Pastilla"),
+                            (4, "Gotas"),
+                            (5, "Jarabe"),
+                            (6, "Inyección"),
+                            (7, "Inhalador"),
+                        ],
+                        verbose_name="tipo",
+                    ),
+                ),
+                (
+                    "measure_unit",
+                    models.SmallIntegerField(
+                        choices=[
+                            (1, "mg"),
+                            (3, "mg/ml"),
+                            (4, "%"),
+                            (4, "unidad"),
+                        ],
+                        verbose_name="unidad de medida",
+                    ),
+                ),
+                ("measure", models.FloatField(verbose_name="medida")),
+                (
+                    "medication",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="medications.medication",
+                        verbose_name="medicamento",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Presentación',
-                'verbose_name_plural': 'Presentaciones',
+                "verbose_name": "Presentación",
+                "verbose_name_plural": "Presentaciones",
             },
         ),
     ]
