@@ -1,7 +1,5 @@
 # Saludarte
 
-![CI](https://github.com/amorales/saludarte/workflows/CI/badge.svg?branch=main)
-
 Este es el punto de partida de la aplicación web de Saludarte. Te recomiendo
 seguir la tabla de contenidos en orden para que puedas ponerte al día con el
 código fuente.
