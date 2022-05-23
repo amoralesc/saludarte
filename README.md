@@ -24,7 +24,7 @@ código fuente.
     - [Git](#git)
   - [Instalando la aplicación](#instalando-la-aplicación)
   - [Ejecutando la aplicación](#ejecutando-la-aplicación)
-- [Entendiendo el código](#entendiendo-el-código)
+- [Documentación](#documentación)
   - [El archivo de entorno `.env`](#el-archivo-de-entorno-env)
   - [El archivo de compose override `docker-compose.override.yml`](#el-archivo-de-compose-override-docker-composeoverrideyml)
   - [El archivo de scripts `./run`](#el-archivo-de-scripts-run)
@@ -35,7 +35,12 @@ código fuente.
     - [Aplicaciones en Django](#aplicaciones-en-django)
     - [Aplicaciones del proyecto](#aplicaciones-del-proyecto)
     - [Modelos en Django](#modelos-en-django)
+    - [Modelos y la base de datos](#modelos-y-la-base-de-datos)
     - [Modelos del proyecto](#modelos-del-proyecto)
+    - [Vistas en Django](#vistas-en-django)
+  - [Back-end](#back-end-1)
+    - [PostgreSQL](#postgresql)
+    - [Celery + Redis](#celery--redis)
 - [Licencia](#licencia)
 - [Atribuciones](#atribuciones)
 
@@ -418,7 +423,7 @@ Recuerda que la aplicación se construye con el argumento `--build` a la hora de
 ejecutarla, por lo que ten en cuenta que toca reconstruir la aplicación solo si
 la imagen Docker cambia.
 
-# Entendiendo el código
+# Documentación
 
 ## El archivo de entorno `.env`
 
@@ -1028,12 +1033,23 @@ Por ejemplo, podemos definir un modelo abstracto que representa la persona
 
 from django.db import models
 
+MALE = 1
+FEMALE = 2
+
+GENDER_CHOICES = (
+    (MALE, "Masculino"),
+    (FEMALE, "Femenino"),
+)
+
 class Person(models.Model):
   first_name = models.CharField(
     "nombres", max_length=128, blank=False
   )
   last_name = models.CharField(
     "apellidos", max_length=128, blank=False
+  )
+  gender = models.SmallIntegerField(
+    "género", choices=GENDER_CHOICES, default=MALE
   )
   # Otros campos [...]
 
@@ -1061,9 +1077,6 @@ from accounts.models import Site
 # porque Person ya es un modelo
 class Resident(Person):
   # Resident hereda todos los campos y métodos de Person
-  date_birth = models.DateField(
-    "fecha de nacimiento", blank=False
-  )
   site = models.ForeignKey(
     Site,
     verbose_name="sede",
@@ -1076,6 +1089,35 @@ class Resident(Person):
     verbose_name = "Residente"
     verbose_name_plural = "Residentes"
 ```
+
+### Modelos y la base de datos
+
+Como se mencionó anteriormente, los modelos son realmente tablas en la base de
+datos. Una aplicación define en su `apps.py` un prefijo, y Django adiciona el
+nombre de la clase para crear el nombre de la tabla. Los campos de un modelo
+representan las columnas de la tabla, y los nombres de estas son los nombres de
+las variables de dichos campos.
+
+Cuando se crean o modifican modelos, es necesario **hacer migraciones** para que
+la base de datos se actualice (ya sea que creando una nueva tabla o modificando
+las columnas de una existente). Estas migraciones consisten en ejecutar dos
+comandos para reflejar los cambios:
+
+```bash
+# Hacer las migraciones. Crea información en el directorio
+# 'migrations' de la aplicación
+./run manage makemigrations
+```
+
+```bash
+# Ejecutar las migraciones sobre la base de datos
+./run manage migrate
+```
+
+**Nota:** Django es "inteligente", y el hecho de crear, alterar o eliminar
+campos sobre un modelo no va a afectar la integridad de la información
+almacenada. De hecho, para eso sirven las migraciones. Sin embargo, cambiar un
+campo de CharField a IntegerField sí puede traer efectos adversos, por ejemplo.
 
 ### Modelos del proyecto
 
@@ -1168,6 +1210,8 @@ realizar las migraciones.
   - Presentación (**presentation FK**)
   - Pertenecen a un residente (**resident FK**).
 
+### Vistas en Django
+
 <!--
 ### Crear una aplicación
 
@@ -1175,10 +1219,61 @@ realizar las migraciones.
 
 ### Templates
 
-## Back-end
-
 ## Front-end
 -->
+
+## Back-end
+
+### PostgreSQL
+
+PostgreSQL es la base de datos configurada para el proyecto. Así mismo, Docker
+está configurado para correr la base de datos como un contenedor.
+
+La escogencia de Postgres se basa principalmente en que es la que más se adapta
+a Django. Así mismo, hacer un cambio a otra base de datos (MySQL, Oracle, etc.)
+no es una buena idea si no se toman las precauciones necesarias, ya que muchas
+de las configuraciones ya están realizadas y se perderían las migraciones
+hechas.
+
+El archivo de entorno `.env` define las variables de entorno básicas para
+configurar la base de datos. Se recomienda cambiar el DATABASE_USER y
+DATABASE_PASSWORD por credenciales seguras y únicas en su máquina. Así mismo, en
+producción se utilizan credenciales seguras.
+
+```bash
+export POSTGRES_USER=saludarte
+export POSTGRES_PASSWORD=password
+export POSTGRES_HOST=postgres
+export POSTGRES_PORT=5432
+export POSTGRES_DB=saludarte
+```
+
+#### Base de datos en producción
+
+Al momento de desplegar la aplicación, por el hecho de estar utilizando Docker,
+la base de datos ya se encuentra integrada al proyecto. Sin embargo, en el plan
+de implementación ya se estudió una arquitectura de despliegue donde la máquina
+virtual (servicio Cloud) actúe como el servidor (donde se monten todos los
+contenedores) y se utilice una base de datos bajo servicio Cloud también.
+
+En dicho caso, sería necesario modificar la configuración de Docker para remover
+el servicio de PostgreSQL y configurar el archivo de entorno con la
+configuración de la base de datos bajo servicio Cloud.
+
+### Celery + Redis
+
+La combinación de tecnologías Celery + Redis permite crear una interfaz para
+ejecutar tareas asíncronas en el proyecto. Actualmente, no hay ninguna
+funcionalidad implementada que esté haciendo uso de esta estrategia, pero se
+pueden identificar tareas donde se podría aprovechar su uso:
+
+- Correr una tarea de mantenimiento cada 24 horas
+- Sistema de notificaciones interno
+- Generación de reportes
+
+Se aconseja buscar tutoriales de como utilizar Celery + Django. De nuevo
+añadiendo, la configuración ya está hecha y solo hay necesidad de buscar como
+crear/programar las tareas.
 
 # Licencia
 
