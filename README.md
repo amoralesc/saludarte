@@ -37,10 +37,15 @@ código fuente.
     - [Modelos en Django](#modelos-en-django)
     - [Modelos y la base de datos](#modelos-y-la-base-de-datos)
     - [Modelos del proyecto](#modelos-del-proyecto)
-    - [Vistas en Django](#vistas-en-django)
   - [Back-end](#back-end-1)
     - [PostgreSQL](#postgresql)
     - [Celery + Redis](#celery--redis)
+  - [Front-end](#front-end-1)
+    - [esbuild](#esbuild)
+    - [TailwindCSS](#tailwindcss)
+    - [JQuery](#jquery)
+    - [DataTables](#datatables)
+  - [Manejando dependencias](#manejando-dependencias)
 - [Licencia](#licencia)
 - [Atribuciones](#atribuciones)
 
@@ -120,7 +125,7 @@ herramienta de CI/CD.
 
 - [esbuild](https://esbuild.github.io/) - Compilador de código JavaScript
 - [TailwindCSS](https://tailwindcss.com/) - Framework CSS que incluye una serie
-  de clases default para crear componentes de diseño .
+  de clases default para crear componentes de diseño.
 - [JQuery](https://jquery.com/) - Manejo del DOM.
 - [DataTables](https://datatables.net/) - Tablas de datos con filtros,
   paginación, ordenación y búsqueda.
@@ -1210,16 +1215,12 @@ realizar las migraciones.
   - Presentación (**presentation FK**)
   - Pertenecen a un residente (**resident FK**).
 
-### Vistas en Django
-
 <!--
-### Crear una aplicación
 
-### Crear una vista
+### Vistas
 
 ### Templates
 
-## Front-end
 -->
 
 ## Back-end
@@ -1274,6 +1275,140 @@ pueden identificar tareas donde se podría aprovechar su uso:
 Se aconseja buscar tutoriales de como utilizar Celery + Django. De nuevo
 añadiendo, la configuración ya está hecha y solo hay necesidad de buscar como
 crear/programar las tareas.
+
+## Front-end
+
+### esbuild
+
+Es una herramienta para compilar / agrupar los componentes de JavaScript para el
+uso de la aplicación. El bundler agrupa las librerías utilizadas, el archivo de
+`assets/js/app.js` y los demás componentes de JavaScript utilizados en un solo
+archivo estático JS. Este archivo es después servido al repositorio de archivos
+estáticos del proyecto (`public/js/app.js` para los componentes JS) para que
+Django lo pueda utilizar en sus templates.
+
+El contenedor _saludarte_js_ se encarga de mantener actualizado el archivo
+bundle.
+
+En los templates base (`templates/layouts`) se incluye este archivo en el
+`<head>` de la página.
+
+```django
+<head>
+  <!-- [...] -->
+  <script defer src="{% static 'js/app.js' %}"></script>
+  <!-- [...] -->
+</head>
+```
+
+### TailwindCSS
+
+Es una [librería](https://tailwindcss.com/) que define muchas clases de
+conveniencia puestas para construir muchos diseños sin necesidad de escribir CSS
+ni salir del documento HTML.
+
+La librería define clases para:
+
+- Manejo de márgenes, padding, spacing
+- Manejo de tamaños de los elementos
+- Manejo de formas, bordes, radios, etc.
+- Manejo de texto, fuentes, tamaño, etc.
+- Manejo de colores de fondo, texto, elementos
+- Flexbox
+- Y mucho más
+
+El framework está incluído en el proyecto, en `assets/css/app.css`, y el
+contenedor _saludarte_css_ se asegura que se construya el archivo estático con
+las clases utilizadas.
+
+Ejemplo:
+
+```django
+<div class="flex flex-col gap-2 mx-auto">
+  <div class="p-2 bg-slate-800 hover:bg-green-600 cursor-pointer">
+    <span class="text-white">Hola</span>
+  </div>
+
+  <div class="p-2 bg-slate-800 hover:bg-green-600 cursor-pointer">
+    <span class="text-white">Mundo</span>
+  </div>
+</div>
+```
+
+### JQuery
+
+[JQuery](https://jquery.com/) es utilizado para manejar el DOM de una manera más
+eficiente. Es requerido por `app.js`.
+
+### DataTables
+
+[DataTables](https://datatables.net/) es una librería para manejar tablas de
+datos con múltiples funcionalidades inmediatas como ordenamiento, búsqueda,
+estilos CSS. Es requerido por `app.js`. De igual forma los templates base
+(`templates/layouts`) incluyen un archivo a los estilos CSS de DataTables en el
+`<head>` de la página.
+
+```django
+<head>
+  <!-- [...] -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" />
+  <!-- [...] -->
+</head>
+```
+
+Ejemplo:
+
+```django
+{# template residents/index.html #}
+
+<!-- ... -->
+<table id="residents-datatable" class="display compact">
+  {# Table header #}
+  <thead>
+    <tr class="font-raleway text-slate-800">
+      <th>NOMBRES</th>
+      <th>APELLIDOS</th>
+      <th>SEDE</th>
+      <th>ACTIONS</th>
+    </tr>
+  </thead>
+
+  {# Table body #}
+  <tbody class="font-raleway">
+    {% for resident in residents %}
+    <tr>
+      <td>{{ resident.first_name }}</td>
+      <td>{{ resident.last_name }}</td>
+      <td>{{ resident.site.name }}</td>
+      <td>...</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- ... -->
+```
+
+```javascript
+// assets/js/app.js
+
+document.ready(function () {
+  $("#residents-datatable").DataTable({
+    language: {
+      url: "../static/datatables.es-ES.json",
+    },
+    // Disable sorting on the 4th column (actions)
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: 3,
+      },
+    ],
+  });
+});
+```
+
+## Manejando dependencias
 
 # Licencia
 
