@@ -965,9 +965,117 @@ También define el CRUD para:
 Un modelo es una clase que hereda de `django.db.models.Model`, y representa una
 entidad de la aplicación (que también pasa a ser una tabla en la base de datos).
 
+#### Campos de un modelo
+
+Para representar un modelo, definimos la clase y le asignamos unos campos
+correspondientes a los atributos del mismo (que pasarían a ser las columnas de
+la tabla en la base de datos). **Nota:** los modelos en Django definen su llave
+primaria por default.
+
+Algunos de los campos más utilizados son:
+
+| Campo                                 | Uso o Descripción                                                                                                                                                  |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BigAutoField                          | Campo generado automáticamente por la configuración de Django para representar la llave primaria de un modelo. Se puede acceder mediante `Modelo.id` o `Modelo.pk` |
+| CharField                             | Campo de texto de tamaño fijo (definido mediante `max_length`). Mejor conocido como VARCHAR                                                                        |
+| DateField                             | Campo de fecha (año, mes, día). Puede utilizar _timezones_                                                                                                         |
+| DateTimeField                         | Campo de fecha y hora (año, mes, día hora, minuto, segundo). Utiliza _timezones_                                                                                   |
+| BooleanField                          | Campo booleano                                                                                                                                                     |
+| SmallIntegerField                     | Campo especialmente útil para ofrecer opciones mediante `choices`                                                                                                  |
+| IntegerField, FloatField, DoubleField | Campos numéricos                                                                                                                                                   |
+| ForeignKey                            | Campo utilizado para hacer una relación muchos a uno con otro modelo                                                                                               |
+| OneToOneField                         | Campo utilizado para hacer una relación uno a uno con otro modelo                                                                                                  |
+| ManyToManyField                       | Campo utilizado para hacer una relación muchos a muchos con otro modelo                                                                                            |
+
+Adicionalmente, los campos tienen propiedades que permiten definir su
+funcionamiento:
+
+| Propiedad                 | Descripción                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| verbose_name = str        | Nombre visual (que el cliente ve) del campo. Nombre de la variable por defecto                                              |
+| null = bool               | Determina si el campo puede ser nulo en la base de datos. False por defecto                                                 |
+| blank = bool              | Determinar si el campo puede estar vacío en Django. False por defecto                                                       |
+| default = valor           | Asigna un valor por defecto al campo                                                                                        |
+| unique = bool             | Determina si el campo es único en la tabla en la base de datos                                                              |
+| choices = lista de tuplas | Convierte el campo en una lista de opciones seleccionable. Desde la vista del cliente, esto luce como una lista desplegable |
+| max_length = int          | Tamaño máximo del campo. Se utiliza con los campos CharField                                                                |
+
+#### Otra información de un modelo
+
+- Los modelos pueden tener información _meta_ adicional asociada, y definida
+  mediante una clase interna `Meta`.
+
+- Los modelos, ya que son clases, también pueden definir métodos. Estos métodos
+  son útiles para retornar información del modelo. Por ejemplo, definiendo
+  métodos que impriman un campo o una combinación de campos siguiendo un
+  formato.
+
+#### Modelos abstractos
+
 Pueden existir modelos abstractos, que no se registran en la base de datos, y de
-los cuales otros modelos heredan. Para este proyecto, se da el caso con
-`residents.models.Person`.
+los cuales otros modelos heredan. En la información _meta_, se marca la clase
+como `abstract = True`.
+
+Para este proyecto, se da el caso con `core.models.Person`.
+
+#### Ejemplo
+
+Por ejemplo, podemos definir un modelo abstracto que representa la persona
+(_Person_):
+
+```python
+# src/core/models.py
+
+from django.db import models
+
+class Person(models.Model):
+  first_name = models.CharField(
+    "nombres", max_length=128, blank=False
+  )
+  last_name = models.CharField(
+    "apellidos", max_length=128, blank=False
+  )
+  # Otros campos [...]
+
+  def get_full_name(self):
+    """Retorna el nombre completo de la persona"""
+    return '%s %s' % (self.first_name, self.last_name)
+
+  class Meta:
+    abstract = True
+    verbose_name = "Persona"
+    verbose_name_plural = "Personas"
+```
+
+y un residente (_Resident_) que es una persona que se encuentra en una sede
+(_Site_):
+
+```python
+# src/residents/models.py
+
+from django.db import models
+from core.models import Person
+from accounts.models import Site
+
+# No hay necesidad de heredar models.Model en Resident
+# porque Person ya es un modelo
+class Resident(Person):
+  # Resident hereda todos los campos y métodos de Person
+  date_birth = models.DateField(
+    "fecha de nacimiento", blank=False
+  )
+  site = models.ForeignKey(
+    Site,
+    verbose_name="sede",
+    on_delete=models.SET_NULL, # Si el sitio es eliminado, se marca como nulo
+    null=True,
+  )
+  # Otros campos [...]
+
+  class Meta:
+    verbose_name = "Residente"
+    verbose_name_plural = "Residentes"
+```
 
 ### Modelos del proyecto
 
@@ -983,6 +1091,7 @@ realizar las migraciones.
 | ----------------- | ----------- | ---------- |
 | BigAutoField (PK) | bigint(8)   | bigint     |
 | CharField         | varchar(n)  | varchar(n) |
+| DateField         | date        | date       |
 | DateTimeField     | timestamp   | timestamp  |
 | BooleanField      | tinyint(1)  | boolean    |
 | SmallIntegerField | smallint(2) | smallint   |
