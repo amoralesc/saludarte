@@ -32,8 +32,9 @@ código fuente.
     - [Estructura de carpetas](#estructura-de-carpetas)
     - [Configuración de Django](#configuración-de-django)
     - [Arquitectura de Django](#arquitectura-de-django)
-    - [Aplicaciones de Django](#aplicaciones-de-django)
+    - [Aplicaciones en Django](#aplicaciones-en-django)
     - [Aplicaciones del proyecto](#aplicaciones-del-proyecto)
+    - [Modelos en Django](#modelos-en-django)
     - [Modelos del proyecto](#modelos-del-proyecto)
 - [Licencia](#licencia)
 - [Atribuciones](#atribuciones)
@@ -701,7 +702,7 @@ Django utiliza una arquitectura llamada _MVT_ (Model View Template).
   </figcaption>
 </figure>
 
-Siguiente el patrón MVT, el cliente envía una petición que es interpretada por
+Siguiendo el patrón MVT, el cliente envía una petición que es interpretada por
 el mapper URL (`urls.py` ubicado en las configuraciones). Cuando se encuentra la
 vista relacionada con la petición (`views.py` de cada aplicación), se envía la
 petición a esta para que la interprete. Si la vista necesita algún dato, se
@@ -710,10 +711,10 @@ Seguidamente, la vista renderiza la plantilla con los datos obtenidos
 (`templates/` de cada aplicación), y esta es envíada junto con la respuesta para
 que el navegador la muestre.
 
-### Aplicaciones de Django
+### Aplicaciones en Django
 
 Una aplicación de Django es un módulo autocontenido que contiene modelos,
-vistas, templates, etc., de un tema relacionado.
+vistas, templates, etc.; e implementa funcionalidades de un tema relacionado.
 
 Así luce la aplicación de _accounts_ del proyecto:
 
@@ -782,9 +783,10 @@ Aquí se definen los modelos de la aplicación. Un modelo es una clase que hered
 de `django.db.models.Model`, y representa una entidad de la aplicación (que
 también pasa a ser una tabla en la base de datos).
 
-Pueden existir modelos abstractos, que no se registran en la base de datos, y de
-los cuales otros modelos heredan. Para este proyecto, se da el caso con
-`residents.models.Person`.
+Los modelos de una aplicación deben estar relacionados con las funcionalidades
+que la aplicación implementa. Por ejemplo, en la aplicación _accounts_ se
+implementa toda la funcionalidad relacionada con las cuentas de los usuarios.
+Los modelos apropiados de esta aplicación deberían definir el `User`.
 
 #### urls.py
 
@@ -816,13 +818,16 @@ redirect_url = reverse_lazy('accounts:profile')
 ```
 
 **Nota:** La aplicación debe definir sus urls en el archivo root de urls
-(`src/config/urls.py`).
+(`src/config/urls.py`), para que puedan ser accedidas por el navegador /
+usuario.
 
 ```python
 # src/config/urls.py
 
 # import [...]
 url_patterns = [
+  # Registra todas las urls de la aplicación accounts
+  # con el prefijo path 'cuenta/'
   path("cuenta/", include("accounts.urls")),
   # [...]
 ]
@@ -955,6 +960,15 @@ También define el CRUD para:
 
 - el manejo de las presentaciones de los medicamentos.
 
+### Modelos en Django
+
+Un modelo es una clase que hereda de `django.db.models.Model`, y representa una
+entidad de la aplicación (que también pasa a ser una tabla en la base de datos).
+
+Pueden existir modelos abstractos, que no se registran en la base de datos, y de
+los cuales otros modelos heredan. Para este proyecto, se da el caso con
+`residents.models.Person`.
+
 ### Modelos del proyecto
 
 Los modelos del proyecto pueden ser representados mediante el siguiente diagrama
@@ -962,6 +976,19 @@ entidad-relación, el cual modela como resulta la base de datos después de
 realizar las migraciones.
 
 <img src=".github/docs/images/erd.png">
+
+#### Convenciones
+
+| Django            | UML         | PostgreSQL |
+| ----------------- | ----------- | ---------- |
+| BigAutoField (PK) | bigint(8)   | bigint     |
+| CharField         | varchar(n)  | varchar(n) |
+| DateTimeField     | timestamp   | timestamp  |
+| BooleanField      | tinyint(1)  | boolean    |
+| SmallIntegerField | smallint(2) | smallint   |
+| IntegerField      | integer(4)  | integer    |
+
+#### Descripción de los modelos
 
 - **Site:** es la entidad que modela las distintas sedes de la organización.
   Existe una sede por defecto, llamada _Global_, que engloba las otras sedes.
